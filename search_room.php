@@ -18,6 +18,8 @@ if (isset($_POST['query'])) {
             $temp['building']   = $building;
             $temp['cust_name']  = $custodian;
             $temp['tech_name'] = $technician;
+            $temp['tech_id'] = $tech_id;
+            $temp['cust_id'] = $cust_id;
 
             array_push($response, $temp);
         }

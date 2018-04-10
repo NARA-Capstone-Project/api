@@ -4,7 +4,7 @@ $rooms = new cict_db_room_functions();
 
 $response = array();
 
-$response = $rooms->getRoomDetails($_POST['user_id']);
+$response = $rooms->getRooms();
 
 echo json_encode($response);
 

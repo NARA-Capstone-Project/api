@@ -11,7 +11,7 @@ class cict_db_room_functions
         $this->con = $db->connect();
     }
 
-    public function getRoomDetails($user_id)
+    public function getRooms()
     {
 
         require_once 'include/cict_db_comp_functions.php';
@@ -20,8 +20,7 @@ class cict_db_room_functions
         $user = new cict_db_users_functions();
 
         $response = array();
-        $st       = $this->con->prepare("SELECT * FROM room WHERE room_custodian_id = ? or room_technician_id = ?");
-        $st->bind_param("ss", $user_id, $user_id);
+        $st       = $this->con->prepare("SELECT * FROM room");
         $st->bind_result($room_id, $dept_id, $cust_id, $tech_id, $room_name, $building, $flr, $room_image);
         $st->execute();
         while ($st->fetch()) {
@@ -41,14 +40,14 @@ class cict_db_room_functions
         $st->close();
 
         for ($i = 0; $i < count($response); $i++) {
-            $room_id      = $response[$i]{'room_id'};
+            $room_id = $response[$i]{'room_id'};
             $dept_id = $response[$i]{'dept_id'};
 
-            //user 
-            $tech_name = $user->getUserInfo($response[$i]{'tech_id'});
-            $cust_name = $user->getUserInfo($response[$i]{'cust_id'});
-            $response[$i]{'tech_name'}   = $tech_name['name'];
-            $response[$i]{'cust_name'}   = $cust_name['name'];
+            //user
+            $tech_name                 = $user->getUserInfo($response[$i]{'tech_id'});
+            $cust_name                 = $user->getUserInfo($response[$i]{'cust_id'});
+            $response[$i]{'tech_name'} = $tech_name['name'];
+            $response[$i]{'cust_name'} = $cust_name['name'];
 
             //department details
             $dept_details              = $this->getDeptdetails($dept_id);
@@ -80,4 +79,13 @@ class cict_db_room_functions
         return $st->get_result()->fetch_assoc();
     }
 
+    public function getRoomDetails($room_id)
+    {
+        $st = $this->con->prepare("SELECT * FROM room WHERE room_id = ?");
+        $st->bind_param("i", $room_id);
+        $st->execute();
+
+
+        return $st->get_result()->fetch_assoc();
+    }
 }
