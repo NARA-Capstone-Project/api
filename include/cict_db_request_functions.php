@@ -20,7 +20,7 @@ class cict_db_request_functions
 
         require_once 'include/cict_db_users_functions.php';
         $db_users = new cict_db_users_functions();
-         require_once 'include/cict_db_room_functions.php';
+        require_once 'include/cict_db_room_functions.php';
         $db_room = new cict_db_room_functions();
 
         while ($stmt->fetch()) {
@@ -31,15 +31,15 @@ class cict_db_request_functions
             $room_details = array();
             $room_details = $db_room->getRooms();
 
-            for($i = 0; $i < count($room_details); $i++){
-                $room = $room_details[$i]{'room_id'};
-                $dept_id = $room_details[$i]{'dept_id'};
+            for ($i = 0; $i < count($room_details); $i++) {
+                $room      = $room_details[$i]{'room_id'};
+                $dept_id   = $room_details[$i]{'dept_id'};
                 $dept_name = $room_details[$i]{'dept_name'};
-                if($room == $room_id){
-                    if(is_null($dept_id)){
+                if ($room == $room_id) {
+                    if (is_null($dept_id)) {
                         $temp['room_name'] = $room_details[$i]{'room_name'};
-                    }else{
-                        $temp['room_name'] = $dept_name ." ". $room_details[$i]{'room_name'};
+                    } else {
+                        $temp['room_name'] = $dept_name . " " . $room_details[$i]{'room_name'};
                     }
                     break;
                 }
@@ -49,8 +49,8 @@ class cict_db_request_functions
             $temp['room_id']        = $room_id;
             $temp['custodian']      = $custodian; //id
             $temp['technician']     = $technician; //id
-            $temp['cust_name'] 		= $cust_details['name']; // cust_name
-            $temp['tech_name'] 		= $tech_details['name']; // cust_name
+            $temp['cust_name']      = $cust_details['name']; // cust_name
+            $temp['tech_name']      = $tech_details['name']; // cust_name
             $temp['date']           = $date;
             $temp['time']           = $time;
             $temp['msg']            = $msg;
@@ -61,5 +61,171 @@ class cict_db_request_functions
             array_push($response, $temp);
         }
         return $response;
+    }
+
+    public function saveInventoryRequest($room_id, $set_date, $set_time, $msg, $date_req, $time_req)
+    {
+        require_once 'include/cict_db_room_functions.php';
+        $room = new cict_db_room_functions();
+        $details = $room->getRoomDetails($room_id);
+        $tech_id = $details['room_technician_id'];
+        $cust_id = $details['room_custodian_id'];
+
+        $stmt = $this->con->prepare("INSERT into request_inventory values(null, null, ?,?,?,?,?,?,?,?,'Pending')");
+        $stmt->bind_param("ssssssss", $room_id, $cust_id, $tech_id, $set_date, $set_time, $msg, $date_req, $time_req);
+
+        if ($stmt->execute()) {
+            $last_id = $this->con->insert_id;
+            return $last_id;
+        } else {
+            return 0;
+        }
+
+    }
+
+    public function saveRepairRequest($set_date, $set_time, $date_req, $time_req, $rep_details,$msg, $comp_id, $image_path)
+    {
+        require_once 'include/cict_db_room_functions.php';
+        $room = new cict_db_room_functions();
+        require_once 'include/cict_db_comp_functions.php';
+        $comps = new cict_db_comp_functions();
+        $comp_details = $comps->getComputerDetails($comp_id);
+        $room_id = $comp_details['room_id'];
+        $details = $room->getRoomDetails($room_id);
+        $tech_id = $details['room_technician_id'];
+        $cust_id = $details['room_custodian_id'];
+
+        if (strlen($image_path) != 0) {
+            $query = "INSERT INTO request_repair VALUES(null, ?,null,?,?,?,?,?,'$image_path','$date_req', '$time_req','Pending',?)";
+        } else {
+            $query = "INSERT INTO request_repair VALUES(null, ?,null,?,?,?,?,?,null,'$date_req', '$time_req','Pending',?)";
+        }
+
+        $st = $this->con->prepare($query);
+        $st->bind_param("issssss", $comp_id, $msg, $cust_id, $tech_id, $set_date, $set_time, $rep_details);
+
+        if ($st->execute()) {
+            return $this->con->insert_id;
+        } else {
+            return 0;
+        }
+
+    }
+
+    public function uploadImage($image, $image_path)
+    {
+        if (file_put_contents($image_path, base64_decode($image))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getRepairRequest()
+    {
+        $response = array();
+        $st       = $this->con->prepare("SELECT * FROM request_repair ORDER BY date_requested DESC, time_requested DESC");
+        $st->bind_result($req_id, $comp_id, $rep_id, $msg, $cust_id, $tech_id, $date, $time, $image, $date_req, $time_req, $req_status, $rep_details);
+        $st->execute();
+        require_once 'include/cict_db_comp_functions.php';
+        $db_comp = new cict_db_comp_functions();
+
+        while ($st->fetch()) {
+            $temp                = array();
+            $temp['req_id']      = $req_id;
+            $temp['comp_id']     = $comp_id;
+            $temp['rep_id']      = $rep_id;
+            $temp['msg']         = $msg;
+            $temp['cust_id']     = $cust_id;
+            $temp['tech_id']     = $tech_id;
+            $temp['set_date']    = $date;
+            $temp['set_time']    = $time;
+            $temp['image']       = $image;
+            $temp['date_req']    = $date_req;
+            $temp['time_req']    = $time_req;
+            $temp['req_status']  = $req_status;
+            $temp['req_details'] = $rep_details;
+            $temp['image'] = $image;
+            array_push($response, $temp);
+        }
+        require_once 'include/cict_db_users_functions.php';
+        $db_users = new cict_db_users_functions();
+        for ($i = 0; $i < count($response); $i++) {
+            $details                 = $db_comp->getComputerDetails($response[$i]{'comp_id'});
+            $response[$i]{'pc_no'}   = $details['pc_no'];
+            $response[$i]{'room_id'} = $details['room_id'];
+
+            //user functions
+            $cust_id = $response[$i]{'cust_id'};
+            $tech_id = $response[$i]{'tech_id'};
+            
+            $cust_details = $db_users->getUserInfo($cust_id);
+            $tech_details = $db_users->getUserInfo($tech_id);
+
+            $cust_name = $cust_details['name'];
+            $tech_name = $tech_details['name'];
+            $response[$i]{'cust_name'} = $cust_name;
+            $response[$i]{'tech_name'} = $tech_name;
+        }
+
+        return $response;
+    }
+
+    public function getPendingInventoryRequest($room_id)
+    {
+        $accepted = 'Accepted';
+        $pending  = 'Pending';
+        $response = array();
+
+        $st = $this->con->prepare("SELECT * FROM request_inventory WHERE room_id = ? and (req_status = 'Pending' or req_status = 'Accepted') ORDER BY date DESC, time DESC LIMIT 1");
+        $st->bind_param("i", $room_id);
+
+        if ($st->execute()) {
+            $result = $st->get_result()->fetch_assoc();
+
+            if (count($result) > 0) {
+                $response['error']          = false;
+                $response['pending']        = true;
+                $response['req_id']         = $result['req_id'];
+                $response['rep_id']         = $result['rep_id'];
+                $response['room_id']        = $result['room_id'];
+                $response['custodian']      = $result['custodian'];
+                $response['technician']     = $result['technician'];
+                $response['date']           = $result['date'];
+                $response['time']           = $result['time'];
+                $response['msg']            = $result['message'];
+                $response['req_status']     = $result['req_status'];
+                $response['date_requested'] = $result['date_requested'];
+                $response['time_requested'] = $result['time_requested'];
+            } else {
+                $response['pending'] = false;
+                $response['error']   = false;
+            }
+        } else {
+            $response['error']   = true;
+            $response['message'] = "An error occured";
+        }
+
+        return $response;
+    }
+
+    public function saveRequestInventoryReport($rep_id, $req_id){
+        $st = $this->con->prepare("UPDATE request_inventory set req_status = 'Done', rep_id = ? where req_id = ?");
+        $st->bind_param("ii", $rep_id, $req_id);
+        if($st->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function saveRequestRepairReport($rep_id, $req_id){
+        $st = $this->con->prepare("UPDATE request_repair set req_status = 'Done', rep_id = ? where req_id = ?");
+        $st->bind_param("ii", $rep_id, $req_id);
+        if($st->execute()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

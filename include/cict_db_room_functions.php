@@ -34,7 +34,6 @@ class cict_db_room_functions
             $temp['building']   = $building;
             $temp['flr']        = $flr;
             $temp['room_image'] = $room_image;
-
             array_push($response, $temp);
         }
         $st->close();
@@ -43,11 +42,23 @@ class cict_db_room_functions
             $room_id = $response[$i]{'room_id'};
             $dept_id = $response[$i]{'dept_id'};
 
+            //get last inventory
+            require_once 'include/cict_db_report_functions.php';
+            $rep = new cict_db_report_functions();
+            $result = $rep->getLastInventory($room_id);
+            if($result > 0){
+                $response[$i]{'last_assess'}  = $result['date'];
+            }else{
+                $response[$i]{'last_assess'} = '---';
+            }
+
             //user
             $tech_name                 = $user->getUserInfo($response[$i]{'tech_id'});
             $cust_name                 = $user->getUserInfo($response[$i]{'cust_id'});
             $response[$i]{'tech_name'} = $tech_name['name'];
             $response[$i]{'cust_name'} = $cust_name['name'];
+            $response[$i]{'cust_phone'} = $cust_name['phone'];
+            $response[$i]{'tech_phone'} = $tech_name['phone'];
 
             //department details
             $dept_details              = $this->getDeptdetails($dept_id);
@@ -71,7 +82,7 @@ class cict_db_room_functions
         return $response;
     } //function
 
-    private function getDeptdetails($dept_id)
+    public function getDeptdetails($dept_id)
     {
         $st = $this->con->prepare("SELECT * from department WHERE dept_id = ?");
         $st->bind_param("i", $dept_id);
@@ -84,7 +95,6 @@ class cict_db_room_functions
         $st = $this->con->prepare("SELECT * FROM room WHERE room_id = ?");
         $st->bind_param("i", $room_id);
         $st->execute();
-
 
         return $st->get_result()->fetch_assoc();
     }

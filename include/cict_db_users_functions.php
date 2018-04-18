@@ -93,4 +93,13 @@ class cict_db_users_functions
         return $response;
     } //function
 
+    public function deleteSignature($user_id){
+        $st = $this->con->prepare("UPDATE accounts SET signature = NULL where user_id = ?");
+        $st->bind_param("s", $user_id);
+        if ($st->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 } //class

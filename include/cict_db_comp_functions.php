@@ -67,7 +67,40 @@ class cict_db_comp_functions
 
             array_push($response, $temp);
         }
+        require_once 'include/cict_db_room_functions.php';
+        $db_room = new cict_db_room_functions();
+
+//room_name
+        for($i = 0; $i < count($response); $i++){
+            $r_id = $response[$i]{'room_id'};
+            $details = $db_room->getRoomDetails($r_id);
+            $dept = $db_room->getDeptdetails($details['dept_id']);
+            if(is_null($details['dept_id'])){
+                $response[$i]{'room_name'} = $details['room_name'];
+            }else{
+                $dept_name = $dept['dept_name'];
+                $response[$i]{'room_name'} = $dept_name ." ". $details['room_name'];
+            }
+        }
 
         return $response;
     }
+    public function updateComputers($comp_status, $comp_id, $kboard, $mouse, $vga)
+    {
+        $stmt = $this->con->prepare("UPDATE comp_details set comp_status = ? where comp_id = ?");
+        $stmt->bind_param("si", $comp_status, $comp_id);
+        if ($stmt->execute()) {
+            $stmt->close();
+            $stmt = $this->con->prepare("UPDATE computers set kboard = ?, mouse = ?, vga = ? where comp_id = ?");
+            $stmt->bind_param("sssi", $kboard, $mouse, $vga, $comp_id);
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
 }
