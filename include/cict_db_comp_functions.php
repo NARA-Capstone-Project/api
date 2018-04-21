@@ -54,6 +54,7 @@ class cict_db_comp_functions
             $temp['room_id']     = $room_id;
             $temp['os']          = $os;
             $temp['model']       = $model;
+            //$temp['cpu']     = $cpu;
             $temp['mb']          = $mb;
             $temp['pr']          = $pr;
             $temp['monitor']     = $monitor;

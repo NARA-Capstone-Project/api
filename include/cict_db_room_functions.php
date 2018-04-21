@@ -26,6 +26,7 @@ class cict_db_room_functions
         while ($st->fetch()) {
             $temp = array();
 
+            //$temp['projector'] = $projector
             $temp['room_id']    = $room_id;
             $temp['dept_id']    = $dept_id;
             $temp['cust_id']    = $cust_id;
