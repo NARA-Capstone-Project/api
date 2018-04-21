@@ -93,7 +93,7 @@ if ($result != 0) {
 
     $sms_result = $db_sms->send_sms($recipient, $msg_body);
     if($sms_result){
-    	$response['sms'] = "Sent! msg: " .$msg_body; //sent!
+    	$response['sms'] = $msg_body; //sent!
     }else{
     	$response['sms'] = "Not Sent!"; //not sent!   
     }

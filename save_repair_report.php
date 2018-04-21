@@ -29,6 +29,12 @@ $db_comp = new cict_db_comp_functions();
 require_once 'include/cict_db_request_functions.php';
 $db_req = new cict_db_request_functions();
 
+require_once 'include/cict_send_sms.php';
+$db_sms = new cict_send_sms();
+require_once 'include/cict_db_room_functions.php';
+$db_rooms = new cict_db_room_functions();
+require_once 'include/cict_db_users_functions.php';
+$db_users = new cict_db_users_functions();
 
 $rep_id = $db_rep->saveInventoryReport($room_id, $date_report, $time_report, $remarks, $cat);
 
@@ -82,9 +88,35 @@ if ($rep_id != 0) {
             $response['error']   = false;
             $response['message'] = 'Report successfully saved!';
 
-
             //sms
+            $room_details = $db_rooms->getRoomDetails($room_id);
+            $cust         = $room_details['room_custodian_id'];
+            $tech         = $room_details['room_technician_id'];
 
+            //room details - room name
+            if (is_null($room_details['dept_id'])) {
+                $room_name = $room_details['room_name'];
+            } else {
+                $dept_details = $db_rooms->getDeptdetails($room_details['dept_id']);
+                $room_name    = $dept_details['dept_name'] . " " . $room_details['room_name'];
+            }
+            //user details
+            $cust_details = $db_users->getUserInfo($cust);
+            $tech_details = $db_users->getUserInfo($tech);
+
+            $cust_name = $cust_details['name'];
+            $tech_name = $tech_details['name'];
+            $recipient = $cust_details['phone'];
+
+            //msg body
+            $msg_body = "Good Day!  Technician $tech_name finished repairing PC $pc_no of room $room_name.";
+
+            $sms_result = $db_sms->send_sms($recipient, $msg_body);
+            if ($sms_result) {
+                $response['sms'] = $msg_body; //sent!
+            } else {
+                $response['sms'] = "Not Sent!"; //not sent!
+            }
         } else {
             $delete = $db_rep->deleteReport($rep_id);
             if ($delete) {
