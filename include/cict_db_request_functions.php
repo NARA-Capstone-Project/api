@@ -286,7 +286,7 @@ class cict_db_request_functions
         }
 
     }
-
+    
     public function getPeripheralRequests()
     {
         $response = array();
@@ -353,5 +353,41 @@ class cict_db_request_functions
         }
 
         return $response;
+    }
+
+    public function updatePeripheralDetails($req_id, $qty, $desc, $unit){
+        $st = $this->con->prepare("UPDATE request_peripherals_details SET qty= ?, peripherals_desc = ?, unit = ? where req_id = ?");
+        $st->bind_param("issi", $qty, $desc,$unit,$req_id);
+        if($st->execute()){
+            return true;
+        }else
+            return false;
+    }
+
+    public function selectPeripheralDetails($req_id, $desc){
+        $st = $this->con->prepare("SELECT * from request_peripherals_details WHERE req_id = ? AND peripherals_desc = ?");
+        $st->bind_param("is", $req_id, $desc);
+        $st->execute();
+        $st->store_result();
+
+        return $st->num_rows() > 0;
+        
+    }
+    public function peripheralsIssuance($req_id, $desc, $qty){
+        $st = $this->con->prepare("UPDATE request_peripherals_details SET qty_issued = ? WHERE req_id =? and peripherals_desc =?");
+        $st->bind_param("iis", $qty, $req_id, $desc);
+        if($st->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function updateReqStatusToIssued($req_id){
+        $st = $this->con->prepare("UPDATE request_peripherals SET req_status = 'Issued' where req_id = ?");
+        $st->bind_param("i",$req_id);
+        if($st->execute()){
+            return true;
+        }else
+            return false;
     }
 }
