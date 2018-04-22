@@ -292,7 +292,7 @@ class cict_db_request_functions
         $response = array();
         $st       = $this->con->prepare("SELECT * FROM request_peripherals ORDER BY date_requested DESC");
 
-        $st->bind_result($req_id, $requisitioner, $dept_id, $designation, $purpose, $date_requested, $date_approved, $req_status, $tech_id);
+        $st->bind_result($req_id, $cust_id, $dept_id, $designation, $purpose, $date_req, $date_approved, $req_status, $tech_id);
         $st->execute();
 
         while ($st->fetch()) {
@@ -324,7 +324,7 @@ class cict_db_request_functions
             $response[$i]{'tech_name'} = $tech_name;
 
             //room details = department and room name
-            list($cust_name, $room_name) = explode("/", $response['designation']);
+            list($cust_name, $room_name) = explode("/", $response[$i]{'designation'});
             $response[$i]{'cust_name'}   = $cust_name;
             $response[$i]{'room_name'}   = $room_name;
         }
@@ -335,12 +335,13 @@ class cict_db_request_functions
     public function getPeripheralDetails($req_id)
     {
         $st = $this->con->prepare("SELECT * FROM request_peripherals_details WHERE req_id = ?");
-        $st->bind_param("i", $req_id);
+        $st->bind_param("i", $req_id);  
         $st->bind_result($req_id, $qty, $unit, $desc, $qty_issued);
+        $st->execute();
         $response = array();
 
         while ($st->fetch()) {
-            $temp = array();
+            $temp = array();    
 
             $temp['req_id']     = $req_id;
             $temp['qty']        = $qty;
