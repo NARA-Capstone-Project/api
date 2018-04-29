@@ -27,10 +27,18 @@ class cict_db_room_functions
             $temp = array();
 
             //$temp['projector'] = $projector
-            $temp['room_id']    = $room_id;
-            $temp['dept_id']    = $dept_id;
-            $temp['cust_id']    = $cust_id;
-            $temp['tech_id']    = $tech_id;
+            $temp['room_id'] = $room_id;
+            $temp['dept_id'] = $dept_id;
+            if (is_null($cust_id)) {
+                $temp['cust_id'] = "";
+            } else {
+                $temp['cust_id'] = $cust_id;
+            }
+            if (is_null($tech_id)) {
+                $temp['tech_id'] = "";
+            } else {
+                $temp['tech_id'] = $tech_id;
+            }
             $temp['room_name']  = $room_name;
             $temp['building']   = $building;
             $temp['flr']        = $flr;
@@ -45,21 +53,31 @@ class cict_db_room_functions
 
             //get last inventory
             require_once 'include/cict_db_report_functions.php';
-            $rep = new cict_db_report_functions();
+            $rep    = new cict_db_report_functions();
             $result = $rep->getLastInventory($room_id);
-            if($result > 0){
-                $response[$i]{'last_assess'}  = $result['date'];
-            }else{
+            if ($result > 0) {
+                $response[$i]{'last_assess'} = $result['date'];
+            } else {
                 $response[$i]{'last_assess'} = '---';
             }
 
             //user
-            $tech_name                 = $user->getUserInfo($response[$i]{'tech_id'});
-            $cust_name                 = $user->getUserInfo($response[$i]{'cust_id'});
-            $response[$i]{'tech_name'} = $tech_name['name'];
-            $response[$i]{'cust_name'} = $cust_name['name'];
-            $response[$i]{'cust_phone'} = $cust_name['phone'];
-            $response[$i]{'tech_phone'} = $tech_name['phone'];
+            if ($response[$i]{'tech_id'} != "") {
+                $tech_name                  = $user->getUserInfo($response[$i]{'tech_id'});
+                $response[$i]{'tech_name'}  = $tech_name['name'];
+                $response[$i]{'tech_phone'} = $tech_name['phone'];
+            } else {
+                $response[$i]{'tech_name'}  = "";
+                $response[$i]{'tech_phone'} = "";
+            }
+            if ($response[$i]{'cust_id'} != "") {
+                $cust_name                  = $user->getUserInfo($response[$i]{'cust_id'});
+                $response[$i]{'cust_name'}  = $cust_name['name'];
+                $response[$i]{'cust_phone'} = $cust_name['phone'];
+            }else{
+                $response[$i]{'cust_name'}  = "";
+                $response[$i]{'cust_phone'} = "";
+            }
 
             //department details
             $dept_details              = $this->getDeptdetails($dept_id);

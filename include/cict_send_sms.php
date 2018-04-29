@@ -1,6 +1,7 @@
 <?php
 
-class cict_send_sms{
+class cict_send_sms
+{
     private $con;
 
     //constructor
@@ -11,10 +12,13 @@ class cict_send_sms{
         $this->con = $db->connect();
     }
 
-    public function send_sms($phone, $message) {
+    public function send_sms($phone, $message)
+    {
         // Authorisation details.
-        $username = "nara.thesis@gmail.com"; //thesis.messenger@gmail.com // wala ng text
+        $username = "nara.thesis@gmail.com";
         $hash     = "b823fa73dcedf7ee6635b0f492c295b266cbcbf958b450059034ee44ae4ccb0c";
+        //$usename = "ltest7754@gmail.com";
+        //$hash = "5b194992ca61f3a62ca5057c6e6d648659645549d4d1f255811b1d0d28006b80";
 
         // Config variables. Consult http://api.txtlocal.com/docs for more info.
         //testing
@@ -35,16 +39,19 @@ class cict_send_sms{
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch); // This is the result from the API
-        curl_close($ch);        
+        curl_close($ch);
 
-	    $response = array();
-	    $json     = json_decode($result);
-	    $status   = $json->status;
-	    if ($status == "success") {
-	    	return true;
-	    } else {
-			return false;
-	    }
+        if ($result != "") {
+            $response = array();
+            $json     = json_decode($result);
+            $status   = $json->status;
+            if ($status == "success") {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false; //no internet
+        }
     }
 }
-?>

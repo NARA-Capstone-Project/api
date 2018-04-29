@@ -1,22 +1,44 @@
 <?php
 
-// require_once 'include/cict_db_room_functions.php';
-// $db = new cict_db_room_functions();
-// require_once 'include/cict_db_room_functions.php';
-// $db_room = new cict_db_room_functions();
+$phone   = $_POST['phone'];
+$message = "HIIII!!";
 
+// Authorisation details.
+$username = "nara.thesis@gmail.com";
+$hash     = "b823fa73dcedf7ee6635b0f492c295b266cbcbf958b450059034ee44ae4ccb0c";
+//$usename = "ltest7754@gmail.com";
+//$hash = "5b194992ca61f3a62ca5057c6e6d648659645549d4d1f255811b1d0d28006b80";
 
-$response = array();
-// $response = $db_room->getRooms();
+// Config variables. Consult http://api.txtlocal.com/docs for more info.
+//testing
+$test = "1";
 
-// for($i = 0; $i < count($response); $i++){
-// 	$id = $response[$i]{'room_id'};
-// 	$room_name = $response[$i]{'dept_name'};
-// 	echo $id ." dept name ". $room_name;
-//
-$json = json_decode(file_get_contents("php://input"), true);
+// Data for text message. This is the text message data.
+$sender = "CP Scan"; // This is who the message appears to be from.
+//get from users table
 
-$response['val'] = $json[0]{'room_id'};
-echo json_encode($response);
+$numbers = $phone; // A single number or a comma-seperated list of numbers
 
+// 612 chars or less
+// A single number or a comma-seperated list of numbers
+$message = urlencode($message);
+$data    = "username=" . $username . "&hash=" . $hash . "&message=" . $message . "&sender=" . $sender . "&numbers=" . $numbers . "&test=" . $test;
+$ch      = curl_init('http://api.txtlocal.com/send/?');
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$result = curl_exec($ch); // This is the result from the API
+curl_close($ch);
 
+if ($result != "") {
+    $response = array();
+    $json     = json_decode($result);
+    $status   = $json->status;
+    if ($status == "success") {
+        echo true;
+    } else {
+        echo false;
+    }
+} else {
+    echo true; //no internet
+}

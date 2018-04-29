@@ -109,6 +109,7 @@ if ($rep_id != 0) {
             $recipient = $cust_details['phone'];
 
             //msg body
+            
             $msg_body = "Good Day!  Technician $tech_name finished assessing your room $room_name inventory, please check and sign the report.";
 
             $sms_result = $db_sms->send_sms($recipient, $msg_body);

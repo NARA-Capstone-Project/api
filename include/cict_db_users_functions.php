@@ -58,7 +58,6 @@ class cict_db_users_functions
             $info = $st->get_result()->fetch_assoc();
             //check if username and pass is correct
             if (count($info) > 0) {
-
                 //check if active
                 if ($info['acc_status'] == 'Active') {
                     //check expiration
@@ -75,11 +74,11 @@ class cict_db_users_functions
                         $response["id"]    = $info['user_id'];
                     } else {
                         $response['error']   = true;
-                        $response["message"] = "Can't login, your account is deactivated or expired";
+                        $response["message"] = "Can't login, your account is deactivated or inactive";
                     }
                 } else {
                     $response['error']   = true;
-                    $response["message"] = "Can't login, your account is deactivated or expired";
+                    $response["message"] = "Can't login, your account is deactivated or inactive";
                 }
             } else {
                 $response['error']   = true;

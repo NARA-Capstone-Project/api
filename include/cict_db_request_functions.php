@@ -14,7 +14,7 @@ class cict_db_request_functions
     public function getRequestInventory()
     {
         $response = array();
-        $stmt     = $this->con->prepare("SELECT * FROM request_inventory ORDER BY date_requested DESC, time_requested DESC");
+        $stmt     = $this->con->prepare("SELECT * FROM request_inventory ORDER BY date_requested ASC, time_requested ASC");
         $stmt->execute();
         $stmt->bind_result($req_id, $rep_id, $room_id, $custodian, $technician, $date, $time, $msg, $date_req, $time_req, $status);
 
@@ -124,7 +124,7 @@ class cict_db_request_functions
     public function getRepairRequest()
     {
         $response = array();
-        $st       = $this->con->prepare("SELECT * FROM request_repair ORDER BY date_requested DESC, time_requested DESC");
+        $st       = $this->con->prepare("SELECT * FROM request_repair ORDER BY date_requested ASC, time_requested ASC");
         $st->bind_result($req_id, $comp_id, $rep_id, $msg, $cust_id, $tech_id, $date, $time, $image, $date_req, $time_req, $req_status, $rep_details);
         $st->execute();
         require_once 'include/cict_db_comp_functions.php';
@@ -243,8 +243,8 @@ class cict_db_request_functions
         $tech_id      = $room_details['room_technician_id'];
         $cust_id      = $room_details['room_custodian_id'];
 
-        $st = $this->con->prepare("INSERT INTO request_peripherals VALUES (NULL, ?,?,?,?,?,NULL,'Pending',?)");
-        $st->bind_param("sissss", $cust_id, $dept_id, $designation, $purpose, $date_req, $tech_id);
+        $st = $this->con->prepare("INSERT INTO request_peripherals VALUES (NULL, ?,?,?,?,?,NULL,'Pending',?,?)");
+        $st->bind_param("sissss", $cust_id, $dept_id, $designation, $purpose, $date_req, $tech_id, $room_id);
         if ($st->execute()) {
             //return id
             return $this->con->insert_id;
@@ -292,11 +292,12 @@ class cict_db_request_functions
         $response = array();
         $st       = $this->con->prepare("SELECT * FROM request_peripherals ORDER BY date_requested DESC");
 
-        $st->bind_result($req_id, $cust_id, $dept_id, $designation, $purpose, $date_req, $date_approved, $req_status, $tech_id);
+        $st->bind_result($req_id, $cust_id, $dept_id, $designation, $purpose, $date_req, $date_approved, $req_status, $tech_id, $room_id);
         $st->execute();
 
         while ($st->fetch()) {
             $temp                  = array();
+            $temp['room_id']        = $room_id;
             $temp['req_id']        = $req_id;
             $temp['cust_id']       = $cust_id;
             $temp['dept_id']       = $dept_id;

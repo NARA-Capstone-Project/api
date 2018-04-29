@@ -44,47 +44,69 @@ class cict_db_comp_functions
     public function getComputers()
     {
         $response = array();
-        $st       = $this->con->prepare("SELECT * from (select comp.*, d.pc_no, d.comp_status, d.room_id from computers as comp, comp_details as d where d.comp_id = comp.comp_id) as comp_details");
+        // $st       = $this->con->prepare("SELECT * from (select comp.*, d.pc_no, d.comp_status, d.room_id from computers as comp, comp_details as d where d.comp_id = comp.comp_id) as comp_details");
+        $st = $this->con->prepare("SELECT * from computers");
         $st->execute();
-        $st->bind_result($comp_id, $os, $model, $pr, $mb, $monitor, $ram, $kboard, $mouse, $vga, $hdd, $pc_no, $status, $room_id);
+        $st->bind_result($comp_id, $os, $model, $pr, $mb, $monitor, $ram, $kboard, $mouse, $vga, $hdd);
 
         while ($st->fetch()) {
-            $temp                = array();
-            $temp['comp_id']     = $comp_id;
-            $temp['room_id']     = $room_id;
-            $temp['os']          = $os;
-            $temp['model']       = $model;
+            $temp            = array();
+            $temp['comp_id'] = $comp_id;
+            $temp['os']      = $os;
+            $temp['model']   = $model;
             //$temp['cpu']     = $cpu;
-            $temp['mb']          = $mb;
-            $temp['pr']          = $pr;
-            $temp['monitor']     = $monitor;
-            $temp['ram']         = $ram;
-            $temp['kboard']      = $kboard;
-            $temp['mouse']       = $mouse;
-            $temp['vga']         = $vga;
-            $temp['hdd']         = $hdd;
-            $temp['comp_status'] = $status;
-            $temp['pc_no']       = $pc_no;
+            $temp['mb']      = $mb;
+            $temp['pr']      = $pr;
+            $temp['monitor'] = $monitor;
+            $temp['ram']     = $ram;
+            $temp['kboard']  = $kboard;
+            $temp['mouse']   = $mouse;
+            $temp['vga']     = $vga;
+            $temp['hdd']     = $hdd;
 
             array_push($response, $temp);
         }
         require_once 'include/cict_db_room_functions.php';
         $db_room = new cict_db_room_functions();
 
-//room_name
-        for($i = 0; $i < count($response); $i++){
-            $r_id = $response[$i]{'room_id'};
-            $details = $db_room->getRoomDetails($r_id);
-            $dept = $db_room->getDeptdetails($details['dept_id']);
-            if(is_null($details['dept_id'])){
-                $response[$i]{'room_name'} = $details['room_name'];
-            }else{
-                $dept_name = $dept['dept_name'];
-                $response[$i]{'room_name'} = $dept_name ." ". $details['room_name'];
+        //comp_details
+        for ($i = 0; $i < count($response); $i++) {
+            $id      = $response[$i]{'comp_id'};
+            $details = $this->computerDetails($id);
+            if (is_null($details['comp_status'])) {
+                $response[$i]{'comp_status'} = 'No Status';
+            } else {
+                $response[$i]{'comp_status'} = $details['comp_status'];
+            }
+
+            $response[$i]{'pc_no'} = $details['pc_no'];
+            $response[$i]{'room_id'} = $details['room_id'];
+
+//room_details
+            $r_id = $details['room_id'];
+            if (!is_null($r_id)) {
+                $r_details = $db_room->getRoomDetails($r_id);
+                $dept    = $db_room->getDeptdetails($r_details['dept_id']);
+                if (is_null($r_details['dept_id'])) {
+                    $response[$i]{'room_name'} = $r_details['room_name'];
+                } else {
+                    $dept_name                 = $dept['dept_name'];
+                    $response[$i]{'room_name'} = $dept_name . " " . $r_details['room_name'];
+                }
+            } else {
+                $response[$i]{'room_name'} = "Not Assigned To a Room";
             }
         }
 
         return $response;
+    }
+
+    public function computerDetails($comp_id)
+    {
+        $st = $this->con->prepare("SELECT * from comp_details where comp_id= ? ");
+        $st->bind_param("i", $comp_id);
+        $st->execute();
+        return $st->get_result()->fetch_assoc();
     }
     public function updateComputers($comp_status, $comp_id, $kboard, $mouse, $vga)
     {
