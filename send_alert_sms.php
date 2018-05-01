@@ -1,9 +1,10 @@
 <?php
+//para sa pc na naligaw sa room
 $response = array();
 
 $room_name = $_POST['room_name'];
 $pc_room_name = $_POST['pc_room_name'];
-$pc_room_id = $_POST['pc_room_id'];
+$pc_room_id = $_POST['pc_room_id']; //room_id ng naligaw na pc
 $pc_no = $_POST['pc_no'];
 $room_cust = $_POST['room_cust']; //custoian name
 $room_cust_phone = $_POST['room_cust_phone']; //cust phone
@@ -34,10 +35,11 @@ $recipient1 = $cust_details['phone'];
 //msg body
 $msg_body = "Good Day! PC $pc_no of $pc_room_name found in $room_name.";
 
-$sms_result = $db_sms->send_sms($recipient1, $msg_body);
+$sms_result = $db_sms->send_sms(array($recipient1, $recipient2), $msg_body);
 if ($sms_result) {
     $response['sms'] = $msg_body; //sent!
 } else {
     $response['sms'] = "Not Sent!"; //not sent!
 }
+
 echo json_encode($response);

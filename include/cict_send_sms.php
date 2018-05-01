@@ -26,9 +26,13 @@ class cict_send_sms
 
         // Data for text message. This is the text message data.
         $sender = "CP Scan"; // This is who the message appears to be from.
-        //get from users table
+        //check if multiple recipient
+        if (gettype($phone) == "array") {
+            $numbers = implode(',', $phone);
+        } else {
+            $numbers = $phone; // A single number
+        }
 
-        $numbers = $phone; // A single number or a comma-seperated list of numbers
 
         // 612 chars or less
         // A single number or a comma-seperated list of numbers

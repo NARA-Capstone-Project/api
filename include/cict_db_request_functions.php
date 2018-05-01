@@ -129,6 +129,8 @@ class cict_db_request_functions
         $st->execute();
         require_once 'include/cict_db_comp_functions.php';
         $db_comp = new cict_db_comp_functions();
+        require_once 'include/cict_db_room_functions.php';
+        $db_room = new cict_db_room_functions();
 
         while ($st->fetch()) {
             $temp                = array();
@@ -154,6 +156,16 @@ class cict_db_request_functions
             $details                 = $db_comp->getComputerDetails($response[$i]{'comp_id'});
             $response[$i]{'pc_no'}   = $details['pc_no'];
             $response[$i]{'room_id'} = $details['room_id'];
+            
+
+            //room
+            $room_details = $db_room->getRoomDetails($response[$i]{'room_id'});
+            if(is_null($room_details['dept_id'])){
+                $response[$i]{'room_name'} = $room_details['room_name'];
+            }else{
+                $department = $db_room->getDeptdetails($room_details['dept_id']);
+                $response[$i]{'room_name'} = $department['dept_name'] ." ". $room_details['room_name'];    
+            }
 
             //user functions
             $cust_id = $response[$i]{'cust_id'};
@@ -286,7 +298,7 @@ class cict_db_request_functions
         }
 
     }
-    
+
     public function getPeripheralRequests()
     {
         $response = array();
@@ -297,7 +309,7 @@ class cict_db_request_functions
 
         while ($st->fetch()) {
             $temp                  = array();
-            $temp['room_id']        = $room_id;
+            $temp['room_id']       = $room_id;
             $temp['req_id']        = $req_id;
             $temp['cust_id']       = $cust_id;
             $temp['dept_id']       = $dept_id;
@@ -336,13 +348,13 @@ class cict_db_request_functions
     public function getPeripheralDetails($req_id)
     {
         $st = $this->con->prepare("SELECT * FROM request_peripherals_details WHERE req_id = ?");
-        $st->bind_param("i", $req_id);  
+        $st->bind_param("i", $req_id);
         $st->bind_result($req_id, $qty, $unit, $desc, $qty_issued);
         $st->execute();
         $response = array();
 
         while ($st->fetch()) {
-            $temp = array();    
+            $temp = array();
 
             $temp['req_id']     = $req_id;
             $temp['qty']        = $qty;
@@ -356,39 +368,47 @@ class cict_db_request_functions
         return $response;
     }
 
-    public function updatePeripheralDetails($req_id, $qty, $desc, $unit){
+    public function updatePeripheralDetails($req_id, $qty, $desc, $unit)
+    {
         $st = $this->con->prepare("UPDATE request_peripherals_details SET qty= ?, peripherals_desc = ?, unit = ? where req_id = ?");
-        $st->bind_param("issi", $qty, $desc,$unit,$req_id);
-        if($st->execute()){
+        $st->bind_param("issi", $qty, $desc, $unit, $req_id);
+        if ($st->execute()) {
             return true;
-        }else
+        } else {
             return false;
+        }
+
     }
 
-    public function selectPeripheralDetails($req_id, $desc){
+    public function selectPeripheralDetails($req_id, $desc)
+    {
         $st = $this->con->prepare("SELECT * from request_peripherals_details WHERE req_id = ? AND peripherals_desc = ?");
         $st->bind_param("is", $req_id, $desc);
         $st->execute();
         $st->store_result();
 
         return $st->num_rows() > 0;
-        
+
     }
-    public function peripheralsIssuance($req_id, $desc, $qty){
+    public function peripheralsIssuance($req_id, $desc, $qty)
+    {
         $st = $this->con->prepare("UPDATE request_peripherals_details SET qty_issued = ? WHERE req_id =? and peripherals_desc =?");
         $st->bind_param("iis", $qty, $req_id, $desc);
-        if($st->execute()){
+        if ($st->execute()) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    public function updateReqStatusToIssued($req_id){
+    public function updateReqStatusToIssued($req_id)
+    {
         $st = $this->con->prepare("UPDATE request_peripherals SET req_status = 'Issued' where req_id = ?");
-        $st->bind_param("i",$req_id);
-        if($st->execute()){
+        $st->bind_param("i", $req_id);
+        if ($st->execute()) {
             return true;
-        }else
+        } else {
             return false;
+        }
+
     }
 }
