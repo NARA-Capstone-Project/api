@@ -81,10 +81,10 @@ class cict_db_report_functions
             return 0;
         }
     }
-    public function saveReportDetails($rep_id, $comp_id, $pc_no, $model, $processor, $mb, $mb_serial, $monitor, $mon_serial, $ram, $kboard, $mouse, $vga, $hdd, $status)
+    public function saveReportDetails($rep_id, $comp_id, $pc_no,$comp_serial, $model, $processor, $mb, $mb_serial, $monitor, $mon_serial, $ram, $kboard, $mouse, $vga, $hdd, $status)
     {
-        $stmt = $this->con->prepare("INSERT into assessment_details values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("iiissssssssssss", $rep_id, $comp_id, $pc_no, $model, $processor, $mb, $mb_serial, $monitor, $mon_serial, $ram, $kboard, $mouse, $vga, $hdd, $status);
+        $stmt = $this->con->prepare("INSERT into assessment_details values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("iiisssssssssssss", $rep_id, $comp_id, $pc_no,$comp_serial, $model, $processor, $mb, $mb_serial, $monitor, $mon_serial, $ram, $kboard, $mouse, $vga, $hdd, $status);
         if ($stmt->execute()) {
             return true;
         } else {
@@ -165,9 +165,11 @@ class cict_db_report_functions
             }
 
             //if repair report
-            if ($response[$i]{'cat'} == 'Repair Report') {
+            if ($response[$i]{'cat'} === 'Repair Report') {
                 $comp_details          = $this->getInventoryDetailsWithId($report);
-                $response[$i]{'pc_no'} = $comp_details[0]{'pc_no'};
+                for ($j = 0 ; $j < count($comp_details) ; $j++){
+                    $response[$i]{'pc_no'} = $comp_details[$j]{'pc_no'};
+                }
             }
         } //for loop
 
@@ -179,7 +181,7 @@ class cict_db_report_functions
         $response = array();
         $st       = $this->con->prepare("SELECT * FROM assessment_details WHERE rep_id = ?");
         $st->bind_param("i", $rep_id);
-        $st->bind_result($rep_id, $comp_id, $pc_no, $model, $processor, $mb, $mb_serial, $monitor, $mon_serial, $ram, $kboard, $mouse, $vga, $hdd, $comp_status);
+        $st->bind_result($rep_id, $comp_id, $pc_no,$comp_serial, $model, $processor, $mb, $mb_serial, $monitor, $mon_serial, $ram, $kboard, $mouse, $vga, $hdd, $comp_status);
         $st->execute();
 
         while ($st->fetch()) {
@@ -187,6 +189,7 @@ class cict_db_report_functions
             $key['rep_id']      = $rep_id;
             $key['comp_id']     = $comp_id;
             $key['pc_no']       = $pc_no;
+            $key['comp_serial']       = $comp_serial;
             $key['model']       = $model;
             $key['pr']          = $processor;
             $key['mb']          = $mb;

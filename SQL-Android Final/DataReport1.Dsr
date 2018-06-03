@@ -1,16 +1,16 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport1 
    Caption         =   "DataReport1"
-   ClientHeight    =   11925
-   ClientLeft      =   60
-   ClientTop       =   450
-   ClientWidth     =   21240
+   ClientHeight    =   10935
+   ClientLeft      =   225
+   ClientTop       =   570
+   ClientWidth     =   20250
    StartUpPosition =   3  'Windows Default
    WindowState     =   2  'Maximized
-   _ExtentX        =   37465
-   _ExtentY        =   21034
+   _ExtentX        =   35719
+   _ExtentY        =   19288
    _Version        =   393216
-   _DesignerVersion=   100688210
+   _DesignerVersion=   100684101
    ReportWidth     =   11100
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
@@ -21,8 +21,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport1
       Italic          =   0   'False
       Strikethrough   =   0   'False
    EndProperty
-   GridX           =   10
-   GridY           =   10
+   GridX           =   1
+   GridY           =   1
    LeftMargin      =   500
    RightMargin     =   500
    TopMargin       =   500
@@ -893,6 +893,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport1
    BeginProperty Section3 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "Section3"
+      Object.Height          =   360
       NumControls     =   0
    EndProperty
    SectionCode4    =   8

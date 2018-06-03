@@ -14,6 +14,7 @@ $verify = $users->verifyLogin($username, $password);
 
 if($verify["error"]){
 	$response["error"] = true;
+	$response["user_id"] = $verify['user_id'];
 	$response["message"] = $verify['message'];
 }else{
 	$response = $users->getUserInfo($verify["id"]);

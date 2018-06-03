@@ -41,6 +41,7 @@ $rep_id = $db_rep->saveInventoryReport($room_id, $date_report, $time_report, $re
 $save_details = false;
 if ($rep_id != 0) {
     foreach ((array) $details as $key) {
+        $comp_serial = $key['comp_serial'];
         $comp_id     = $key['comp_id'];
         $pc_no       = $key['pc_no'];
         $model       = $key['model'];
@@ -56,7 +57,7 @@ if ($rep_id != 0) {
         $hdd         = $key['hdd'];
         $comp_status = $key['comp_status'];
 
-        $result = $db_rep->saveReportDetails($rep_id, $comp_id, $pc_no, $model, $pr, $mb, $mb_serial, $monitor, $mon_serial, $ram, $kboard, $mouse, $vga, $hdd, $comp_status);
+        $result = $db_rep->saveReportDetails($rep_id, $comp_id, $pc_no,$comp_serial, $model, $pr, $mb, $mb_serial, $monitor, $mon_serial, $ram, $kboard, $mouse, $vga, $hdd, $comp_status);
         if ($result) {
             $detailsSaved = $db_comp->updateComputers($comp_status, $comp_id, $kboard, $mouse, $vga);
             if ($detailsSaved) {

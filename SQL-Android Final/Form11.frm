@@ -23,25 +23,27 @@ Begin VB.Form Form11
    ScaleWidth      =   9645
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.TextBox Text8 
+      Height          =   495
+      Left            =   615
+      TabIndex        =   22
+      Top             =   8175
+      Width           =   8535
+   End
+   Begin VB.ComboBox Combo1 
+      Height          =   345
+      ItemData        =   "Form11.frx":7E658
+      Left            =   615
+      List            =   "Form11.frx":7E662
+      TabIndex        =   21
+      Top             =   9120
+      Width           =   8475
+   End
    Begin VB.TextBox Text10 
       Height          =   495
       Left            =   600
-      TabIndex        =   21
+      TabIndex        =   19
       Top             =   10080
-      Width           =   8535
-   End
-   Begin VB.TextBox Text9 
-      Height          =   495
-      Left            =   600
-      TabIndex        =   17
-      Top             =   8160
-      Width           =   8535
-   End
-   Begin VB.TextBox Text8 
-      Height          =   495
-      Left            =   600
-      TabIndex        =   16
-      Top             =   9120
       Width           =   8535
    End
    Begin VB.TextBox Text7 
@@ -123,7 +125,7 @@ Begin VB.Form Form11
       EndProperty
       Height          =   495
       Left            =   360
-      TabIndex        =   22
+      TabIndex        =   20
       Top             =   240
       Width           =   3735
    End
@@ -142,7 +144,7 @@ Begin VB.Form Form11
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Left            =   600
-      TabIndex        =   20
+      TabIndex        =   18
       Top             =   7800
       Width           =   4215
    End
@@ -161,7 +163,7 @@ Begin VB.Form Form11
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Left            =   600
-      TabIndex        =   19
+      TabIndex        =   17
       Top             =   8760
       Width           =   4215
    End
@@ -180,7 +182,7 @@ Begin VB.Form Form11
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Left            =   600
-      TabIndex        =   18
+      TabIndex        =   16
       Top             =   9720
       Width           =   4215
    End
@@ -330,6 +332,7 @@ KeyAscii = 0
 Beep
 End Sub
 
+
 Private Sub Command1_Click()
 If Text1.Text = "" Then
     MsgBox "Empty fields not allowed", vbExclamation
@@ -371,9 +374,9 @@ If Text8.Text = "" Then
     Text8.SetFocus
     Exit Sub
 End If
-If Text9.Text = "" Then
+If Combo1.Text = "" Then
     MsgBox "Empty fields not allowed", vbExclamation
-    Text9.SetFocus
+    Combo1.SetFocus
     Exit Sub
 End If
 If Text10.Text = "" Then
@@ -381,34 +384,51 @@ If Text10.Text = "" Then
     Text10.SetFocus
     Exit Sub
 End If
+'check kung may kamukang serial number ung monitor saka mb
 If form_type = "modify" Then
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "update computers set os = '" & Text1.Text & "', model = '" & Text2.Text & "', processor = '" & Text3.Text & "', motherboard = '" & Text4.Text & "',  monitor = '" & Text5.Text & "',ram = '" & Text6.Text & "',kboard = '" & Text7.Text & "',mouse = '" & Text8.Text & "',vga = '" & Text9.Text & "',hdd = '" & Text10.Text & "' where comp_id = '" & selected_id & "'")
-MsgBox "Computer Updated!", vbInformation
-Unload Me
+    Set rs = Nothing
+    Call set_rec_getData(rs, cn, "select * from computers where motherboard = '" & Text4.Text & "' and not comp_id = '" & selected_id & "'")
+    If rs.RecordCount > 0 Then
+        MsgBox "Motherboard Serial already exists!", vbInformation
+        Exit Sub
+    Else
+        Set rs = Nothing
+        Call set_rec_getData(rs, cn, "select * from computers where monitor = '" & Text5.Text & "' and not comp_id = '" & selected_id & "'")
+        If rs.RecordCount > 0 Then
+            Set rs = Nothing
+            MsgBox "Monitor Serial already exists!", vbInformation
+        Exit Sub
+        End If
+    End If
+End If
+
+If form_type = "create" Then
+    Set rs = Nothing
+    Call set_rec_getData(rs, cn, "select * from computers where motherboard = '" & Text4.Text & "'")
+    If rs.RecordCount > 0 Then
+        MsgBox "Motherboard Serial already exists!", vbInformation
+        Exit Sub
+    Else
+        Set rs = Nothing
+        Call set_rec_getData(rs, cn, "select * from computers where monitor = '" & Text5.Text & "' ")
+        If rs.RecordCount > 0 Then
+            Set rs = Nothing
+            MsgBox "Monitor Serial already exists!", vbInformation
+        Exit Sub
+        End If
+    End If
+End If
+
+If form_type = "modify" Then
+    Set rs = Nothing
+    Call set_rec_getData(rs, cn, "update computers set os = '" & Text1.Text & "', model = '" & Text2.Text & "', processor = '" & Text3.Text & "', motherboard = '" & Text4.Text & "', monitor = '" & Text5.Text & "', ram = '" & Text6.Text & "', kboard = '" & Text7.Text & "', mouse = '" & Text8.Text & "', vga = '" & Combo1.Text & "', hdd = '" & Text10.Text & "'")
+    MsgBox "Computer Updated!", vbInformation
+    Unload Me
 ElseIf form_type = "create" Then
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "INSERT INTO computers (os, model,processor, motherboard,monitor,ram,kboard,mouse,vga,hdd) VALUES ('" & Text1.Text & "', '" & Text2.Text & "', '" & Text3.Text & "' , '" & Text4.Text & "' , '" & Text5.Text & "' , '" & Text6.Text & "' , '" & Text7.Text & "', '" & Text8.Text & "', '" & Text9.Text & "', '" & Text10.Text & "')")
-MsgBox "Computer Saved!", vbInformation
-Unload Me
-ElseIf form_type = "profile" Then
-current_user = Text3.Text
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "INSERT INTO users (user_id, email,name, phone,role) VALUES ('" & Text1.Text & "', '" & Text5.Text & "', '" & Text2.Text & "' , '" & Text6.Text & "' ,'" & Combo1.Text & "')")
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "INSERT INTO accounts (user_id, username, password,date_created,date_expire,acc_status) VALUES ('" & Text1.Text & "', '" & Text3.Text & "', AES_ENCRYPT('" & Text4.Text & "','cictpassword'), now()  ,DATE_SUB(now(), INTERVAL 5 month),'Active')")
-MsgBox "Employees Saved!", vbInformation
-Unload Me
-ElseIf form_type = "request" Then
-current_user = Text3.Text
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "INSERT INTO users (user_id, email,name, phone,role) VALUES ('" & Text1.Text & "', '" & Text5.Text & "', '" & Text2.Text & "' , '" & Text6.Text & "' ,'" & Combo1.Text & "')")
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "INSERT INTO accounts (user_id, username, password,date_created,date_expire,acc_status) VALUES ('" & Text1.Text & "', '" & Text3.Text & "', AES_ENCRYPT('" & Text4.Text & "','cictpassword'), now()  ,DATE_SUB(now(), INTERVAL 5 month),'Active')")
-MsgBox "Employee Request Accepted!", vbInformation
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "delete from request_account where id = '" & selected_id & "'")
-Unload Me
+    Set rs = Nothing
+    Call set_rec_getData(rs, cn, "INSERT INTO computers (os, model,processor, motherboard,monitor,ram,kboard,mouse,vga,hdd) VALUES ('" & Text1.Text & "', '" & Text2.Text & "', '" & Text3.Text & "' , '" & Text4.Text & "' , '" & Text5.Text & "' , '" & Text6.Text & "' , '" & Text7.Text & "', '" & Text8.Text & "', '" & Combo1.Text & "', '" & Text10.Text & "')")
+    MsgBox "Computer Saved!", vbInformation
+    Unload Me
 End If
 'INSERT INTO testtable VALUE(AES_ENCRYPT('mytext','passw'));
 End Sub
@@ -423,10 +443,10 @@ Set rs = Nothing
 'Call ConnectMySQL("192.168.1.5", "user", "1234", "cict")
 If form_type = "create" Then
     Command1.Caption = "Save"
-    label11.Caption = "Add Computer Form"
+    Label11.Caption = "Add Computer Form"
 ElseIf form_type = "modify" Then
     Command1.Caption = "Update"
-    label11.Caption = "Computer Modify Form"
+    Label11.Caption = "Computer Modify Form"
     Set rs = Nothing
     Call set_rec_getData(rs, cn, "SELECT * FROM computers where comp_id  ='" & selected_id & "'")
         If Not rs.RecordCount = 0 Then
@@ -438,38 +458,10 @@ ElseIf form_type = "modify" Then
             Text6.Text = rs.Fields("ram")
             Text7.Text = rs.Fields("kboard")
             Text8.Text = rs.Fields("mouse")
-            Text9.Text = rs.Fields("vga")
+            'Text9.Text = rs.Fields("vga")
             Text10.Text = rs.Fields("hdd")
-            
+            Combo1.Text = rs.Fields("vga")
         End If
-ElseIf form_type = "profile" Then
-    Command1.Caption = "Update"
-     label11.Caption = "Employee Modify Form - " & selected_name
-    Set rs = Nothing
-    Call set_rec_getData(rs, cn, "SELECT * FROM users LEFT JOIN accounts ON users.user_id = accounts.user_id where users.user_id ='" & current_id & "'")
-    If Not rs.RecordCount = 0 Then
-        Text1.Text = rs.Fields("user_id")
-        Text2.Text = rs.Fields("name")
-        Text3.Text = rs.Fields("username")
-        Text4.Text = ""
-        Text5.Text = rs.Fields("email")
-        Text6.Text = rs.Fields("phone")
-        Combo1.Text = rs.Fields("role")
-        Combo1.Enabled = False
-    End If
-ElseIf form_type = "request" Then
-    Command1.Caption = "Update"
-     label11.Caption = "Add Employee Request Form - " & selected_name
-    Set rs = Nothing
-    Call set_rec_getData(rs, cn, "SELECT *,CAST(AES_DECRYPT(password, 'cictpassword') AS CHAR(50)) as b from request_account where id = '" & selected_id & "'")
-    
-        Text4.Text = rs.Fields("b")
-        Text4.Enabled = False
-        Text1.Text = rs.Fields("id")
-        Text1.Enabled = False
-        Text3.Text = rs.Fields("username")
-        Text3.Enabled = False
-        
 End If
 
 End Sub

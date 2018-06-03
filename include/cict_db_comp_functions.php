@@ -47,14 +47,14 @@ class cict_db_comp_functions
         // $st       = $this->con->prepare("SELECT * from (select comp.*, d.pc_no, d.comp_status, d.room_id from computers as comp, comp_details as d where d.comp_id = comp.comp_id) as comp_details");
         $st = $this->con->prepare("SELECT * from computers");
         $st->execute();
-        $st->bind_result($comp_id, $os, $model, $pr, $mb, $monitor, $ram, $kboard, $mouse, $vga, $hdd);
+        $st->bind_result($comp_id, $os, $model,$comp_serial, $pr, $mb, $monitor, $ram, $kboard, $mouse, $vga, $hdd);
 
         while ($st->fetch()) {
             $temp            = array();
             $temp['comp_id'] = $comp_id;
             $temp['os']      = $os;
             $temp['model']   = $model;
-            //$temp['cpu']     = $cpu;
+            $temp['comp_serial']     = $comp_serial;
             $temp['mb']      = $mb;
             $temp['pr']      = $pr;
             $temp['monitor'] = $monitor;

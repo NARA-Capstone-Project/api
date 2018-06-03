@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin VB.Form Form2 
-   BorderStyle     =   4  'Fixed ToolWindow
-   Caption         =   "Login"
+   BorderStyle     =   0  'None
+   Caption         =   "8"
    ClientHeight    =   3705
-   ClientLeft      =   45
-   ClientTop       =   315
+   ClientLeft      =   0
+   ClientTop       =   -75
    ClientWidth     =   8205
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
@@ -126,6 +126,24 @@ Begin VB.Form Form2
       CHECK           =   0   'False
       VALUE           =   0   'False
    End
+   Begin VB.Label Label11 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Log In"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   18
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   150
+      TabIndex        =   4
+      Top             =   165
+      Width           =   3735
+   End
 End
 Attribute VB_Name = "Form2"
 Attribute VB_GlobalNameSpace = False
@@ -136,7 +154,7 @@ Private Sub Command1_Click()
 Set rs = Nothing
 Set cn = Nothing
 Call ConnectMySQL
-Call set_rec_getData(rs, cn, "SELECT a.user_id,username,role,password, AES_DECRYPT(password,'cictpassword') FROM accounts as a LEFT JOIN users as b on a.user_id = b.user_id  where username ='" & Text1.Text & "' and AES_DECRYPT(password,'cictpassword') = '" & Text2.Text & "'")
+Call set_rec_getData(rs, cn, "SELECT a.user_id,username,role,password,b.name, AES_DECRYPT(password,'cictpassword') as pass FROM accounts as a LEFT JOIN users as b on a.user_id = b.user_id  where username ='" & Text1.Text & "' and AES_DECRYPT(password,'cictpassword') = '" & Text2.Text & "'")
 
 If rs.RecordCount = 0 Then
 MsgBox "User not Recognized!", vbExclamation
@@ -148,6 +166,7 @@ If rs.Fields("role") = "Admin" Or rs.Fields("role") = "Main Technician" Then
 current_role = rs.Fields("role")
 current_id = rs.Fields("user_id")
 current_name = rs.Fields("username")
+current_user_name = rs.Fields("name")
 Unload Me
 Form5.Show
 Else

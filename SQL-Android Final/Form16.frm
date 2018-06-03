@@ -69,7 +69,7 @@ Begin VB.Form Form16
       _Version        =   393216
       FixedCols       =   0
       BackColor       =   16777215
-      BackColorSel    =   12648447
+      BackColorSel    =   16711680
       BackColorBkg    =   12632256
       TextStyleFixed  =   2
       FocusRect       =   2
@@ -181,8 +181,9 @@ Call fillfgrid
 End Sub
 
 Private Sub Command1_Click()
-form_type = "create"
-Form14.Show vbModal
+'form_type = "create"
+form_type = "computer"
+Form20.Show vbModal
 End Sub
 
 Private Sub Command2_Click()
@@ -198,21 +199,24 @@ End Sub
 
 Private Sub Form_Load()
 
-
 Set cn = Nothing
 Call ConnectMySQL
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT * FROM room where room_id = '" & selected_id & "'")
+'modified
+Call set_rec_getData(rs, cn, "SELECT * FROM ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id from (select r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name' from room r left join department on department.dept_id = r.dept_id) as rooms) rooms where rooms.room_id = '" & selected_id & "'")
 Me.Caption = Me.Caption & " " & rs.Fields("room_name")
 Label1.Caption = "Room Name: " & rs.Fields("room_name")
 Set rs = Nothing
+'modified
 Call set_rec_getData(rs, cn, "SELECT * FROM comp_details as a LEFT JOIN computers as b ON a.comp_id = b.comp_id where a.room_id = '" & selected_id & "' and comp_status = 'Working'")
 Label2.Caption = "Total Computers Working: " & rs.RecordCount & " Units"
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT * FROM comp_details as a LEFT JOIN computers as b ON a.comp_id = b.comp_id where a.room_id = '" & selected_id & "' order by pc_no asc")
+'modified
+Call set_rec_getData(rs, cn, "SELECT * from computers left outer join comp_details on comp_details.comp_id = computers.comp_id where comp_details.room_id = '" & selected_id & "' order by pc_no asc")
 Label4.Caption = "Total Pc Count: " & rs.RecordCount & " Units"
 Call fillfgrid
 End Sub
+
 Public Sub fillfgrid()
 fgrid1.Clear
 fgrid1.FormatString = "PC No.         " & vbTab & _
@@ -223,10 +227,10 @@ fgrid1.Rows = 1
 If Not rs.RecordCount = 0 Then
     rs.MoveFirst
     Dim myspecs As String
-    myspecs = rs.Fields("model") & " " & rs.Fields("processor") & " " & rs.Fields("motherboard")
     While Not rs.EOF
     'MsgBox rs.Fields("loan_status")
     
+    myspecs = rs.Fields("model") & " " & rs.Fields("processor") & " " & rs.Fields("motherboard")
       fgrid1.AddItem rs.Fields("pc_no") & vbTab & myspecs & vbTab & rs.Fields("comp_status") & vbTab & rs.Fields("comp_id")
        
         rs.MoveNext
@@ -241,3 +245,4 @@ Call set_rec_getData(rs, cn, "SELECT *,a.room_id as r_id FROM room as a LEFT JOI
 
 fillfgrid
 End Sub
+

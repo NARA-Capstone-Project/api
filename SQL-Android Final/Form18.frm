@@ -24,11 +24,20 @@ Begin VB.Form Form18
    ScaleWidth      =   15165
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton Command3 
+      Caption         =   "Sign"
+      Enabled         =   0   'False
+      Height          =   510
+      Left            =   210
+      TabIndex        =   12
+      Top             =   9780
+      Width           =   3240
+   End
    Begin MSFlexGridLib.MSFlexGrid fgrid2 
       Height          =   7905
-      Left            =   240
-      TabIndex        =   12
-      Top             =   1680
+      Left            =   255
+      TabIndex        =   11
+      Top             =   1710
       Visible         =   0   'False
       Width           =   14655
       _ExtentX        =   25850
@@ -36,7 +45,7 @@ Begin VB.Form Form18
       _Version        =   393216
       FixedCols       =   0
       BackColor       =   16777215
-      BackColorSel    =   12648447
+      BackColorSel    =   16711680
       BackColorBkg    =   12632256
       TextStyleFixed  =   2
       FocusRect       =   2
@@ -54,15 +63,6 @@ Begin VB.Form Form18
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "Generate Report Base on Result"
-      Enabled         =   0   'False
-      Height          =   495
-      Left            =   240
-      TabIndex        =   11
-      Top             =   9720
-      Width           =   3135
    End
    Begin VB.ComboBox Combo4 
       Height          =   345
@@ -138,13 +138,12 @@ Begin VB.Form Form18
       _Version        =   393216
       FixedCols       =   0
       BackColor       =   16777215
-      BackColorSel    =   12648447
+      BackColorSel    =   16711680
       BackColorBkg    =   12632256
       TextStyleFixed  =   2
       FocusRect       =   2
       HighLight       =   2
       GridLinesFixed  =   1
-      ScrollBars      =   2
       SelectionMode   =   1
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -241,7 +240,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub cmdfill_Click()
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id")
+Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id")
 Call fillfgrid
 End Sub
 
@@ -249,10 +248,9 @@ Private Sub Combo1_Click()
 Combo2.Clear
 Combo3.Clear
 Combo4.Clear
-Command1.Enabled = False
-If Combo1.ListIndex = 0 Then
+If Combo1.ListIndex = 0 Then 'assessment report
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id")
+Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id")
 fillfgrid
 Combo2.Clear
 Combo2.AddItem "Custodian"
@@ -262,7 +260,7 @@ Combo2.AddItem "Room"
 Combo2.AddItem "Report Type"
 
 
-ElseIf Combo1.ListIndex = 1 Then
+ElseIf Combo1.ListIndex = 1 Then 'request peripherals
 Set rs = Nothing
 Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id ")
 fillfgrid2
@@ -273,7 +271,7 @@ Combo2.AddItem "Date"
 'Combo2.AddItem "Room"
 ElseIf Combo1.ListIndex = 2 Then
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id")
+Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id")
 'fillfgrid3
 End If
 End Sub
@@ -328,7 +326,7 @@ If Combo1.ListIndex = 0 Then
             Wend
         End If
     ElseIf Combo2.ListIndex = 2 Then
-        Call set_rec_getData2(rs2, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id")
+        Call set_rec_getData2(rs2, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id")
         If Not rs2.RecordCount = 0 Then
             Combo3.Clear
             rs2.MoveFirst
@@ -409,48 +407,48 @@ Set rs = Nothing
 If Combo1.ListIndex = 0 Then
 If Combo2.ListIndex = 0 Then
 Combo4.ListIndex = Combo3.ListIndex
-    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where custodian_id = '" & Combo4.Text & "'")
-    Command1.Enabled = True
+    Call set_rec_getData(rs, cn, "SELECT *,c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where custodian_id = '" & Combo4.Text & "'")
+   
     Call fillfgrid
 ElseIf Combo2.ListIndex = 1 Then
 Combo4.ListIndex = Combo3.ListIndex
-    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where technician_id = '" & Combo4.Text & "'")
-    Command1.Enabled = True
+    Call set_rec_getData(rs, cn, "SELECT *,c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where technician_id = '" & Combo4.Text & "'")
+    
     Call fillfgrid
 ElseIf Combo2.ListIndex = 2 Then
-    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where `date` = '" & Combo3.Text & "'")
-    Command1.Enabled = True
+    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where `date` = '" & Combo3.Text & "'")
+    
     Call fillfgrid
 ElseIf Combo2.ListIndex = 3 Then
 Combo4.ListIndex = Combo3.ListIndex
-    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where e.room_id = '" & Combo4.Text & "'")
-    Command1.Enabled = True
+    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where e.room_id = '" & Combo4.Text & "'")
+    
     Call fillfgrid
 ElseIf Combo2.ListIndex = 4 Then
 
-    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where category = '" & Combo3.Text & "'")
-    Command1.Enabled = True
+    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a  LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where category = '" & Combo3.Text & "'")
+    
     Call fillfgrid
 End If
 ElseIf Combo1.ListIndex = 1 Then
 If Combo2.ListIndex = 0 Then
 Combo4.ListIndex = Combo3.ListIndex
     Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id  where requisitioner = '" & Combo4.Text & "'")
-    Command1.Enabled = True
+    
     Call fillfgrid2
 ElseIf Combo2.ListIndex = 1 Then
 Combo4.ListIndex = Combo3.ListIndex
     Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id  where req_status = '" & Combo3.Text & "'")
-    Command1.Enabled = True
+    
     Call fillfgrid2
 ElseIf Combo2.ListIndex = 2 Then
     Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id  where `date_requested` = '" & Combo3.Text & "'")
-    Command1.Enabled = True
+    
     Call fillfgrid2
 ElseIf Combo2.ListIndex = 3 Then
 Combo4.ListIndex = Combo3.ListIndex
     Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where e.room_id = '" & Combo4.Text & "'")
-    Command1.Enabled = True
+    
     Call fillfgrid2
 End If
 End If
@@ -465,6 +463,110 @@ Unload Me
 Form5.Show
 End Sub
 
+Private Sub Command3_Click()
+'get rep id, get combo1
+If Combo1.ListIndex = 0 Then 'assessment
+    'assessmet_reports
+    If current_role = "Admin" Then
+        Set rs = Nothing
+        Call set_rec_getData(rs, cn, "select * from accounts where user_id = '" & current_id & "'")
+        If IsNull(rs.Fields("signature")) = True Then
+            MsgBox "You don't have digital signature yet, please install the mobile application and add your signature, thank you"
+        Else
+        Set rs = Nothing
+            Call set_rec_getData(rs, cn, "update assessment_reports set admin_signed = 1 where rep_id = '" & selected_id & "'")
+            MsgBox "Successfully Signed!"
+        End If
+    Else
+        Set rs = Nothing
+        Call set_rec_getData(rs, cn, "select * from accounts where user_id = '" & current_id & "'")
+        If IsNull(rs.Fields("signature")) = True Then
+            MsgBox "You don't have digital signature yet, please install the mobile application and add your signature, thank you"
+        Else
+            Set rs = Nothing
+         Call set_rec_getData(rs, cn, "update assessment_reports set htech_signed = 1 where rep_id = '" & selected_id & "'")
+            MsgBox "Successfully Signed!"
+        End If
+    End If
+Else ' request reports
+    Set rs = Nothing
+    'IsNull(rs.Fields("room_id"))
+        'check kung may signature si admin
+        Call set_rec_getData(rs, cn, "select * from accounts where user_id = '" & current_id & "'")
+        If IsNull(rs.Fields("signature")) = True Then
+            MsgBox "You don't have digital signature yet, please install the mobile application and add your signature, thank you"
+        Else
+            Set rs = Nothing
+            Call set_rec_getData(rs, cn, "update request_peripherals set req_status = 'Approved', date_approved = CURDATE()  where req_id = '" & selected_id & "'")
+            MsgBox "Request Approved!", vbInformation
+        End If
+        
+    
+End If
+End Sub
+
+Private Sub fgrid1_Click()
+'single clicked enable sign button
+'always check kung Done n ung stat
+
+selected_id = fgrid1.TextMatrix(fgrid1.Row, 5)
+Set rs = Nothing
+Call set_rec_getData(rs, cn, "SELECT * FROM assessment_reports where rep_id = '" & selected_id & "'")
+Dim has_cust As Boolean
+    If IsNull(rs.Fields("custodian_id")) = True Then
+        has_cust = False
+    Else
+        has_cust = True
+    End If
+    
+Dim cust_signed As Integer
+Dim tech_signed As Integer
+Dim admin_signed As Integer
+If Not rs.EOF Then
+    cust_signed = rs.Fields("cust_signed")
+    tech_signed = rs.Fields("htech_signed")
+    admin_signed = rs.Fields("admin_signed")
+    If admin_signed = 1 Then
+        Command3.Enabled = False
+    Else 'technician
+        If current_role = "Admin" Then
+            If has_cust = True Then
+                If cust_signed = 1 Then
+                    If tech_signed = 1 Then
+                        Command3.Enabled = True
+                    Else
+                        Command3.Enabled = False
+                    End If
+                Else
+                    Command3.Enabled = False
+                End If
+            Else
+                If tech_signed = 1 Then
+                   Command3.Enabled = True
+                Else
+                   Command3.Enabled = False
+                End If
+            End If
+        Else
+            If has_cust = True Then
+                If cust_signed = 1 Then
+                    If tech_signed = 0 Then
+                        Command3.Enabled = True
+                    Else
+                        Command3.Enabled = False
+                    End If
+                Else
+                 Command3.Enabled = False
+                End If
+            Else
+                Command3.Enabled = True
+            End If
+            
+        End If
+    End If
+End If
+End Sub
+
 Private Sub fgrid1_DblClick()
 If fgrid1.Cols = 2 Then
 Beep
@@ -472,6 +574,24 @@ Else
 selected_id = fgrid1.TextMatrix(fgrid1.Row, 5)
 report_type = "Assesment"
 Form19.Show vbModal
+End If
+End Sub
+
+
+Private Sub fgrid2_Click()
+'single clicked enable sign button
+'always check kung confirmed ung stat
+selected_id = fgrid2.TextMatrix(fgrid2.Row, 6)
+Set rs = Nothing
+Call set_rec_getData(rs, cn, "SELECT * FROM request_peripherals where req_id = '" & selected_id & "'")
+Dim status As String
+status = rs.Fields("req_status")
+If status = "Confirmed" Then
+    If current_role = "Admin" Then
+        Command3.Enabled = True
+    End If
+Else
+    Command3.Enabled = False
 End If
 End Sub
 
@@ -485,12 +605,11 @@ Form19.Show vbModal
 End If
 End Sub
 
+
 Private Sub Form_Load()
 Set rs = Nothing
 Set cn = Nothing
 Call ConnectMySQL
-
-
 End Sub
 Public Sub fillfgrid()
 fgrid2.Visible = False
@@ -499,22 +618,20 @@ fgrid1.Clear
 fgrid1.FormatString = "Room Name                              " & vbTab & _
 "Technician                                     " & vbTab & _
 "Custodian                                      " & vbTab & _
-"Date                                           " & vbTab & _
-"Remarks                                                                              " & vbTab & _
+"Date                                                    " & vbTab & _
+"Remarks                                                                      " & vbTab & _
 "ID"
 fgrid1.Rows = 1
 If Not rs.RecordCount = 0 Then
     rs.MoveFirst
-    Dim assto As String
-   
-    While Not rs.EOF
-    'MsgBox rs.Fields("loan_status")
     
+    While Not rs.EOF
        fgrid1.AddItem rs.Fields("room_name") & vbTab & rs.Fields("technician") & vbTab & rs.Fields("custodian") & vbTab & rs.Fields("date") & vbTab & rs.Fields("remarks") & vbTab & rs.Fields("rep_id")
        
         rs.MoveNext
     Wend
 End If
+fgrid1.ColWidth(5) = 0
 
 End Sub
 Public Sub fillfgrid2()
@@ -544,7 +661,7 @@ If Not rs.RecordCount = 0 Then
         rs.MoveNext
     Wend
 End If
-
+fgrid2.ColWidth(6) = 0
 End Sub
 Private Sub Text1_Change()
 Set rs = Nothing
@@ -552,3 +669,4 @@ Call set_rec_getData(rs, cn, "SELECT *,a.room_id as r_id FROM room as a LEFT JOI
 
 fillfgrid
 End Sub
+

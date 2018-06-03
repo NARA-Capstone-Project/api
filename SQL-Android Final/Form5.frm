@@ -17,7 +17,6 @@ Begin VB.Form Form5
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form5"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Picture         =   "Form5.frx":0000
@@ -25,6 +24,23 @@ Begin VB.Form Form5
    ScaleWidth      =   17730
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Timer Timer1 
+      Interval        =   1000
+      Left            =   6720
+      Top             =   585
+   End
+   Begin VB.PictureBox Picture4 
+      BorderStyle     =   0  'None
+      Height          =   1560
+      Left            =   540
+      Picture         =   "Form5.frx":39053D
+      ScaleHeight     =   104
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   126
+      TabIndex        =   11
+      Top             =   1395
+      Width           =   1890
+   End
    Begin AdministratorSystem.chameleonButton Command1 
       Height          =   600
       Left            =   16440
@@ -53,9 +69,9 @@ Begin VB.Form Form5
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "Form5.frx":39053D
-      PICN            =   "Form5.frx":390559
-      PICH            =   "Form5.frx":393E8C
+      MICON           =   "Form5.frx":396719
+      PICN            =   "Form5.frx":396735
+      PICH            =   "Form5.frx":39A068
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -105,9 +121,9 @@ Begin VB.Form Form5
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "Form5.frx":3978E3
-         PICN            =   "Form5.frx":3978FF
-         PICH            =   "Form5.frx":3A1EDA
+         MICON           =   "Form5.frx":39DABF
+         PICN            =   "Form5.frx":39DADB
+         PICH            =   "Form5.frx":3A80B6
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -154,7 +170,7 @@ Begin VB.Form Form5
          NoFolders       =   0   'False
          Transparent     =   0   'False
          ViewID          =   "{0057D0E0-3573-11CF-AE69-08002B2E1262}"
-         Location        =   "http:///"
+         Location        =   ""
       End
    End
    Begin VB.PictureBox Picture1 
@@ -193,7 +209,7 @@ Begin VB.Form Form5
          NoFolders       =   0   'False
          Transparent     =   0   'False
          ViewID          =   "{0057D0E0-3573-11CF-AE69-08002B2E1262}"
-         Location        =   "http:///"
+         Location        =   ""
       End
    End
    Begin AdministratorSystem.chameleonButton Command2 
@@ -224,9 +240,9 @@ Begin VB.Form Form5
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "Form5.frx":3AC9CA
-      PICN            =   "Form5.frx":3AC9E6
-      PICH            =   "Form5.frx":3B66ED
+      MICON           =   "Form5.frx":3B2BA6
+      PICN            =   "Form5.frx":3B2BC2
+      PICH            =   "Form5.frx":3BC8C9
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -264,9 +280,9 @@ Begin VB.Form Form5
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "Form5.frx":3C08ED
-      PICN            =   "Form5.frx":3C0909
-      PICH            =   "Form5.frx":3C9C69
+      MICON           =   "Form5.frx":3C6AC9
+      PICN            =   "Form5.frx":3C6AE5
+      PICH            =   "Form5.frx":3CFE45
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -304,9 +320,9 @@ Begin VB.Form Form5
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "Form5.frx":3D34E4
-      PICN            =   "Form5.frx":3D3500
-      PICH            =   "Form5.frx":3DB062
+      MICON           =   "Form5.frx":3D96C0
+      PICN            =   "Form5.frx":3D96DC
+      PICH            =   "Form5.frx":3E123E
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -315,6 +331,42 @@ Begin VB.Form Form5
       HAND            =   0   'False
       CHECK           =   0   'False
       VALUE           =   0   'False
+   End
+   Begin VB.Label Label3 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Date: dd MMM, yyyy Time: HH:MM"
+      BeginProperty Font 
+         Name            =   "Carlito"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   300
+      Left            =   7275
+      TabIndex        =   13
+      Top             =   630
+      Width           =   4395
+   End
+   Begin VB.Label Label2 
+      BackStyle       =   0  'Transparent
+      Caption         =   "User: Name"
+      BeginProperty Font 
+         Name            =   "Carlito"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   270
+      Left            =   645
+      TabIndex        =   12
+      Top             =   585
+      Width           =   3405
    End
    Begin VB.Label Label1 
       Alignment       =   2  'Center
@@ -357,7 +409,7 @@ Unload Me
 Form12.Show
 End Sub
 
-Private Sub command4_Click()
+Private Sub Command4_Click()
 Unload Me
 Form1.Show
 End Sub
@@ -374,6 +426,9 @@ WebBrowser2.Navigate (App.Path & "\lb.gif")
 Set rs = Nothing
 Set cn = Nothing
 ConnectMySQL
+
+Label2.Caption = "User: " & current_user_name
+
 If current_role = "Admin" Then
 Picture3.Enabled = True
 Label1.Visible = False
@@ -383,3 +438,8 @@ Label1.Visible = True
 End If
 
 End Sub
+
+Private Sub Timer1_Timer()
+Label3.Caption = "Date: " & Date & " Time: " & Time
+End Sub
+

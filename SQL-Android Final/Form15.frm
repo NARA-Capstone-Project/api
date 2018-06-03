@@ -165,7 +165,7 @@ End Sub
 Private Sub Form_Load()
 Dim temp_room_id As String
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT *,a.room_id as r_id FROM room as a LEFT JOIN comp_details as b ON a.room_id = b.room_id LEFT JOIN department as c ON a.dept_id = c.dept_id LEFT JOIN users as d ON a.room_custodian_id = d.user_id where a.room_id = '" & selected_id & "' order by a.room_id desc")
+Call set_rec_getData(rs, cn, "select * from room left join ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id from (select r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.room_schedule from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = room.room_id LEFT JOIN users as d ON room.room_custodian_id = d.user_id where room.room_id = '" & selected_id & "' order by room.room_id desc")
 Label1.Caption = rs.Fields("room_name")
 If rs.Fields("floor") = 1 Then
 Label2.Caption = "1st Floor"

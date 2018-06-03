@@ -43,7 +43,7 @@ Begin VB.Form Form4
       Height          =   345
       ItemData        =   "Form4.frx":14457
       Left            =   720
-      List            =   "Form4.frx":1446A
+      List            =   "Form4.frx":14467
       TabIndex        =   13
       Top             =   7560
       Width           =   8535
@@ -51,7 +51,9 @@ Begin VB.Form Form4
    Begin VB.TextBox Text6 
       Height          =   495
       Left            =   720
+      MaxLength       =   11
       TabIndex        =   9
+      Text            =   "09"
       Top             =   6600
       Width           =   8535
    End
@@ -64,7 +66,9 @@ Begin VB.Form Form4
    End
    Begin VB.TextBox Text4 
       Height          =   495
+      IMEMode         =   3  'DISABLE
       Left            =   720
+      PasswordChar    =   "*"
       TabIndex        =   5
       Top             =   4680
       Width           =   8535
@@ -266,7 +270,7 @@ If Text2.Text = "" Then
     Text2.SetFocus
     Exit Sub
 End If
-If Text3.Text = "" Then
+If Text3.Text = "" Then 'username
     'modified
     If form_type = "modify" Then
         Set rs = Nothing
@@ -321,13 +325,21 @@ End If
 'modified
 'If Text5.Text = "" Then
  '   MsgBox "Empty fields not allowed", vbExclamation
-  '  Text6.SetFocus
+  '  Text5.SetFocus
    ' Exit Sub
 'End If
 If Text6.Text = "" Then
     MsgBox "Empty fields not allowed", vbExclamation
     Text6.SetFocus
     Exit Sub
+Else
+    Dim isValid As Boolean
+    isValid = Text6.Text Like "[09]##########"
+    If Not isValid Then
+        Text6.SetFocus
+        MsgBox "Set valid mobile number", vbExclamation
+        Exit Sub
+    End If
 End If
 If Combo1.Text = "" Then
     MsgBox "Empty fields not allowed", vbExclamation
@@ -397,7 +409,6 @@ Set rs = Nothing
     End If
     
 'username
-
 Set rs = Nothing
     If form_type = "create" Then
         If Text3.Enabled = True Then
@@ -429,6 +440,42 @@ Set rs = Nothing
                 Exit Sub
         End If
     End If
+
+'phone
+
+Set rs = Nothing
+    If form_type = "create" Then
+        If Text6.Enabled = True Then
+            Call set_rec_getData(rs, cn, "SELECT * FROM users where phone = '" & Text6.Text & "'")
+            If rs.RecordCount >= 1 Then
+                MsgBox "Phone Already Registered", vbExclamation
+                Text6.Text = "09"
+                Text6.SetFocus
+                Exit Sub
+            End If
+
+        End If
+    ElseIf form_type = "modify" Then
+        If Text6.Enabled = True Then
+            Call set_rec_getData(rs, cn, "SELECT * FROM users where phone = '" & Text6.Text & "'  and not user_id = '" & selected_id & "'")
+             If rs.RecordCount >= 1 Then
+                MsgBox "Phone Already Registered", vbExclamation
+                Text6.Text = "09"
+                Text6.SetFocus
+                Exit Sub
+            End If
+        End If
+    Else 'profile
+        If Text6.Enabled = True Then
+            Call set_rec_getData(rs, cn, "SELECT * FROM users where phone = '" & Text6.Text & "'  and not user_id = '" & selected_id & "'")
+             If rs.RecordCount >= 1 Then
+                MsgBox "Phone Already Registered", vbExclamation
+                Text6.Text = "09"
+                Text6.SetFocus
+                Exit Sub
+            End If
+        End If
+    End If
     
 'inserting and updating
 If form_type = "modify" Then
@@ -440,7 +487,7 @@ If form_type = "modify" Then
     Call set_rec_getData(rs, cn, "SELECT * FROM accounts where user_id = '" & selected_id & "'")
         If Not rs.RecordCount = 0 Then
             Set rs = Nothing
-            Call set_rec_getData(rs, cn, "update accounts set user_id = '" & Text1.Text & "', username = '" & Text5.Text & "', password = AES_ENCRYPT('" & Text4.Text & "','cictpassword') where user_id = '" & selected_id & "'")
+            Call set_rec_getData(rs, cn, "update accounts set user_id = '" & Text1.Text & "', username = '" & Text3.Text & "', password = AES_ENCRYPT('" & Text4.Text & "','cictpassword') where user_id = '" & selected_id & "'")
         Else
             'walang account pero gusto ni admin bigyan ng account
             If Text3.Enabled = True Then

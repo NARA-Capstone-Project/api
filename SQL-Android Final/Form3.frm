@@ -152,6 +152,12 @@ If MsgBox("Are you sure you want to delete user " & selected_name & "?", vbYesNo
     Call set_rec_getData(rs, cn, "delete FROM accounts where user_id = '" & selected_id & "'")
     Set rs = Nothing
     Call set_rec_getData(rs, cn, "delete FROM users where user_id = '" & selected_id & "'")
+    
+    Set rs = Nothing
+    Call set_rec_getData(rs, cn, "update room set room_custodian_id = NULL where room_custodian_id = '" & selected_id & "'")
+    
+    Set rs = Nothing
+    Call set_rec_getData(rs, cn, "update room set room_technician_id = NULL where room_technician_id = '" & selected_id & "'")
     MsgBox "Records Deleted!", vbInformation
     Unload Me
 End If

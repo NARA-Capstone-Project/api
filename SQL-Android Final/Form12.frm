@@ -85,7 +85,8 @@ Begin VB.Form Form12
       _Version        =   393216
       FixedCols       =   0
       BackColor       =   16777215
-      BackColorSel    =   12648447
+      BackColorSel    =   16711680
+      ForeColorSel    =   16777215
       BackColorBkg    =   12632256
       TextStyleFixed  =   2
       FocusRect       =   2
@@ -150,7 +151,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub cmdfill_Click()
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT *,a.room_id as r_id FROM room as a LEFT JOIN comp_details as b ON a.room_id = b.room_id LEFT JOIN department as c ON a.dept_id = c.dept_id LEFT JOIN users as d ON a.room_custodian_id = d.user_id order by a.room_id desc")
+'Call set_rec_getData(rs, cn, "SELECT *,a.room_id as r_id FROM room as a LEFT JOIN comp_details as b ON a.room_id = b.room_id LEFT JOIN department as c ON a.dept_id = c.dept_id LEFT JOIN users as d ON a.room_custodian_id = d.user_id order by a.room_id desc")
+Call set_rec_getData(rs, cn, "select * from room left join ( select dept_room, concat_ws('',dept_name,'') as dept_name,room_id from (select r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'dept_room' from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = room.room_id LEFT JOIN users as d ON room.room_custodian_id = d.user_id order by room.room_id desc")
 Call fillfgrid
 End Sub
 
@@ -173,7 +175,8 @@ Private Sub Form_Load()
 Set rs = Nothing
 Set cn = Nothing
 Call ConnectMySQL
-Call set_rec_getData(rs, cn, "SELECT *,a.room_id as r_id FROM room as a LEFT JOIN comp_details as b ON a.room_id = b.room_id LEFT JOIN department as c ON a.dept_id = c.dept_id LEFT JOIN users as d ON a.room_custodian_id = d.user_id order by a.room_id desc")
+'Call set_rec_getData(rs, cn, "SELECT *,a.room_id as r_id FROM room as a LEFT JOIN comp_details as b ON a.room_id = b.room_id LEFT JOIN department as c ON a.dept_id = c.dept_id LEFT JOIN users as d ON a.room_custodian_id = d.user_id order by a.room_id desc")
+Call set_rec_getData(rs, cn, "select * from room left join ( select dept_room, concat_ws('',dept_name,'') as dept_name,room_id from (select r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'dept_room' from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = room.room_id LEFT JOIN users as d ON room.room_custodian_id = d.user_id order by room.room_id desc")
 Call fillfgrid
 End Sub
 Public Sub fillfgrid()
@@ -192,7 +195,7 @@ If Not rs.RecordCount = 0 Then
     While Not rs.EOF
     'MsgBox rs.Fields("loan_status")
     
-       fgrid1.AddItem rs.Fields("room_name") & vbTab & rs.Fields("building") & vbTab & rs.Fields("floor") & vbTab & rs.Fields("dept_name") & vbTab & rs.Fields("name") & vbTab & rs.Fields("r_id")
+       fgrid1.AddItem rs.Fields("dept_room") & vbTab & rs.Fields("building") & vbTab & rs.Fields("floor") & vbTab & rs.Fields("dept_name") & vbTab & rs.Fields("name") & vbTab & rs.Fields("room_id")
        
         rs.MoveNext
     Wend
@@ -202,7 +205,10 @@ End Sub
 
 Private Sub Text1_Change()
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT *,a.room_id as r_id FROM room as a LEFT JOIN comp_details as b ON a.room_id = b.room_id LEFT JOIN department as c ON a.dept_id = c.dept_id LEFT JOIN users as d ON a.room_custodian_id = d.user_id   where `name` like '%" & Text1.Text & "%' or `building` like '%" & Text1.Text & "%' or `room_name` like '%" & Text1.Text & "%' order by a.room_id desc")
+'Call set_rec_getData(rs, cn, "SELECT *,a.room_id as r_id FROM room as a LEFT JOIN comp_details as b ON a.room_id = b.room_id LEFT JOIN department as c ON a.dept_id = c.dept_id LEFT JOIN users as d ON a.room_custodian_id = d.user_id   where `name` like '%" & Text1.Text & "%' or `building` like '%" & Text1.Text & "%' or `room_name` like '%" & Text1.Text & "%' order by a.room_id desc")
+Call set_rec_getData(rs, cn, "select * from room left join ( select dept_room, concat_ws('',dept_name,'') as dept_name,room_id from (select r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'dept_room' from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = room.room_id LEFT JOIN users as d ON room.room_custodian_id = d.user_id where d.name like '%" & Text1.Text & "%' or building like '%" & Text1.Text & "%' or rooms.dept_name like '%" & Text1.Text & "%' or rooms.dept_room like '%" & Text1.Text & "%' order by room.room_id desc")
 
 fillfgrid
 End Sub
+
+

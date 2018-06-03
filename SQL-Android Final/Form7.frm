@@ -70,14 +70,14 @@ Begin VB.Form Form7
       Height          =   7425
       Left            =   240
       TabIndex        =   2
-      Top             =   1800
+      Top             =   1815
       Width           =   13935
       _ExtentX        =   24580
       _ExtentY        =   13097
       _Version        =   393216
       FixedCols       =   0
       BackColor       =   16777215
-      BackColorSel    =   12648447
+      BackColorSel    =   16711680
       BackColorBkg    =   12632256
       TextStyleFixed  =   2
       FocusRect       =   2

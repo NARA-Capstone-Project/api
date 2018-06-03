@@ -146,14 +146,13 @@ Dim user As String
 
 
 If selected_request = "reactivate" Then
-If MsgBox("Are you sure you want to Reactivate " & selected_name & "?", vbYesNo) = vbYes Then
-    Set rs = Nothing
-    Call set_rec_getData(rs, cn, "update accounts set acc_status = 'Active' where user_id = '" & selected_id & "'")
-    Set rs = Nothing
-    Call set_rec_getData(rs, cn, "delete from request_account where id = '" & selected_id & "'")
-    MsgBox "User " & selected_name & " Activated!"
-    Unload Me
-End If
+    If MsgBox("Are you sure you want to reactivate " & selected_name & "?", vbYesNo) = vbYes Then
+        Set rs = Nothing
+        Call set_rec_getData(rs, cn, "update accounts set acc_status = 'Active', date_expire = DATE_ADD(now(), INTERVAL 5 month) where user_id = '" & selected_id & "'")
+        Set rs = Nothing
+        Call set_rec_getData(rs, cn, "delete from request_account where id = '" & selected_id & "'")
+        MsgBox "User " & selected_name & " Activated!"
+    End If
 ElseIf selected_request = "account" Then
     form_type = "request"
     'modified - added setdata
@@ -168,8 +167,8 @@ ElseIf selected_request = "account" Then
     Set rs = Nothing
     Call set_rec_getData(rs, cn, "delete from request_account where id = '" & selected_id & "'")
     
-Unload Me
 End If
+    Unload Me
 End Sub
 
 Private Sub Command2_Click()

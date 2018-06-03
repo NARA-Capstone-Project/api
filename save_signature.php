@@ -19,7 +19,7 @@ if (strlen($imageString) != 0) {
         mkdir($image_dir, 0777, true);
     }
 
-    $image_path = $image_dir . "/" . rand() . "_" . time() . ".jpeg";
+    $image_path = $image_dir . "/" . rand() . "_" . time() . ".jpg";
 } else {
     $image_path = "";
 }

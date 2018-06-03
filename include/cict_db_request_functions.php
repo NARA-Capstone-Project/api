@@ -16,7 +16,7 @@ class cict_db_request_functions
         $response = array();
         $stmt     = $this->con->prepare("SELECT * FROM request_inventory ORDER BY date_requested ASC, time_requested ASC");
         $stmt->execute();
-        $stmt->bind_result($req_id, $rep_id, $room_id, $custodian, $technician, $date, $time, $msg, $date_req, $time_req, $status);
+        $stmt->bind_result($req_id, $rep_id, $room_id, $custodian, $technician, $date, $time, $msg, $date_req, $time_req, $status, $remark);
 
         require_once 'include/cict_db_users_functions.php';
         $db_users = new cict_db_users_functions();
@@ -57,6 +57,7 @@ class cict_db_request_functions
             $temp['req_status']     = $status;
             $temp['date_requested'] = $date_req;
             $temp['time_requested'] = $time_req;
+            $temp['cancel_remarks'] = $remark;
 
             array_push($response, $temp);
         }
@@ -71,7 +72,7 @@ class cict_db_request_functions
         $tech_id = $details['room_technician_id'];
         $cust_id = $details['room_custodian_id'];
 
-        $stmt = $this->con->prepare("INSERT into request_inventory values(null, null, ?,?,?,?,?,?,?,?,'Pending')");
+        $stmt = $this->con->prepare("INSERT into request_inventory values(null, null, ?,?,?,?,?,?,?,?,'Pending', NULL)");
         $stmt->bind_param("ssssssss", $room_id, $cust_id, $tech_id, $set_date, $set_time, $msg, $date_req, $time_req);
 
         if ($stmt->execute()) {
@@ -96,9 +97,9 @@ class cict_db_request_functions
         $cust_id      = $details['room_custodian_id'];
 
         if (strlen($image_path) != 0) {
-            $query = "INSERT INTO request_repair VALUES(null, ?,null,?,?,?,?,?,'$image_path','$date_req', '$time_req','Pending',?)";
+            $query = "INSERT INTO request_repair VALUES(null, ?,null,?,?,?,?,?,'$image_path','$date_req', '$time_req','Pending',?,NULL)";
         } else {
-            $query = "INSERT INTO request_repair VALUES(null, ?,null,?,?,?,?,?,null,'$date_req', '$time_req','Pending',?)";
+            $query = "INSERT INTO request_repair VALUES(null, ?,null,?,?,?,?,?,null,'$date_req', '$time_req','Pending',?,NULL)";
         }
 
         $st = $this->con->prepare($query);
@@ -125,7 +126,7 @@ class cict_db_request_functions
     {
         $response = array();
         $st       = $this->con->prepare("SELECT * FROM request_repair ORDER BY date_requested ASC, time_requested ASC");
-        $st->bind_result($req_id, $comp_id, $rep_id, $msg, $cust_id, $tech_id, $date, $time, $image, $date_req, $time_req, $req_status, $rep_details);
+        $st->bind_result($req_id, $comp_id, $rep_id, $msg, $cust_id, $tech_id, $date, $time, $image, $date_req, $time_req, $req_status, $rep_details, $remark);
         $st->execute();
         require_once 'include/cict_db_comp_functions.php';
         $db_comp = new cict_db_comp_functions();
@@ -148,6 +149,7 @@ class cict_db_request_functions
             $temp['req_status']  = $req_status;
             $temp['req_details'] = $rep_details;
             $temp['image']       = $image;
+            $temp['cancel_remarks'] = $remark;
             array_push($response, $temp);
         }
         require_once 'include/cict_db_users_functions.php';
@@ -209,6 +211,7 @@ class cict_db_request_functions
                 $response['req_status']     = $result['req_status'];
                 $response['date_requested'] = $result['date_requested'];
                 $response['time_requested'] = $result['time_requested'];
+                $response['cancel_remarks'] = $result['cancel_remarks'];
             } else {
                 $response['pending'] = false;
                 $response['error']   = false;
@@ -255,8 +258,8 @@ class cict_db_request_functions
         $tech_id      = $room_details['room_technician_id'];
         $cust_id      = $room_details['room_custodian_id'];
 
-        $st = $this->con->prepare("INSERT INTO request_peripherals VALUES (NULL, ?,?,?,?,?,NULL,'Pending',?,?)");
-        $st->bind_param("sissss", $cust_id, $dept_id, $designation, $purpose, $date_req, $tech_id, $room_id);
+        $st = $this->con->prepare("INSERT INTO request_peripherals VALUES (NULL, ?,?,?,?,?,NULL,'Pending',?,?,NULL)");
+        $st->bind_param("sissssi", $cust_id, $dept_id, $designation, $purpose, $date_req, $tech_id, $room_id);
         if ($st->execute()) {
             //return id
             return $this->con->insert_id;
@@ -304,7 +307,7 @@ class cict_db_request_functions
         $response = array();
         $st       = $this->con->prepare("SELECT * FROM request_peripherals ORDER BY date_requested DESC");
 
-        $st->bind_result($req_id, $cust_id, $dept_id, $designation, $purpose, $date_req, $date_approved, $req_status, $tech_id, $room_id);
+        $st->bind_result($req_id, $cust_id, $dept_id, $designation, $purpose, $date_req, $date_approved, $req_status, $tech_id, $room_id, $remark);
         $st->execute();
 
         while ($st->fetch()) {
@@ -319,6 +322,7 @@ class cict_db_request_functions
             $temp['date_approved'] = $date_approved;
             $temp['req_status']    = $req_status;
             $temp['tech_id']       = $tech_id;
+            $temp['cancel_remarks'] = $remark;
 
             array_push($response, $temp);
         }

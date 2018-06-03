@@ -12,6 +12,7 @@ if (isset($_POST['query']) and
 
 	$id = $_POST['id'];
 
+
 	$stmt = $con->prepare($query);
 	$stmt->bind_param("i", $id);
 

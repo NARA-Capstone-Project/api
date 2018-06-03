@@ -26,18 +26,18 @@ class cict_db_users_functions
         //account details
         $accountDetails = $this->getUserAccountInfo($user_id);
 
-        $response['user_id']    = $users['user_id'];
-        $response['email']      = $users['email'];
-        $response['name']       = $users['name'];
-        $response['phone']      = $users['phone'];
-        $response['role']       = $users['role'];
-        $response['username']   = $accountDetails['username'];
-        $response['password']   = $accountDetails['password'];
-        $response['signature']  = $accountDetails['signature'];
-        $response['password']   = $accountDetails['password'];
-        $response['create']     = $accountDetails['date_created'];
-        $response['date_expire']     = $accountDetails['date_expire'];
-        $response['acc_status'] = $accountDetails['acc_status'];
+        $response['user_id']     = $users['user_id'];
+        $response['email']       = $users['email'];
+        $response['name']        = $users['name'];
+        $response['phone']       = $users['phone'];
+        $response['role']        = $users['role'];
+        $response['username']    = $accountDetails['username'];
+        $response['password']    = $accountDetails['password'];
+        $response['signature']   = $accountDetails['signature'];
+        $response['password']    = $accountDetails['password'];
+        $response['create']      = $accountDetails['date_created'];
+        $response['date_expire'] = $accountDetails['date_expire'];
+        $response['acc_status']  = $accountDetails['acc_status'];
 
         return $response;
     }
@@ -73,31 +73,52 @@ class cict_db_users_functions
                         $response['error'] = false;
                         $response["id"]    = $info['user_id'];
                     } else {
+                        //update account as deactivate
+                        $deactivate          = $this->deactivateUser($info['user_id']);
                         $response['error']   = true;
+                        $response['user_id'] = $info['user_id'];
                         $response["message"] = "Can't login, your account is deactivated or inactive";
                     }
                 } else {
                     $response['error']   = true;
+                    $response['user_id'] = $info['user_id'];
                     $response["message"] = "Can't login, your account is deactivated or inactive";
                 }
             } else {
                 $response['error']   = true;
+                $response['user_id'] = "";
                 $response["message"] = "Incorrect username or password";
             }
         } else {
             $response['error']   = true;
+            $response['user_id'] = "";
             $response["message"] = "An error occured, try again later";
         }
 
         return $response;
     } //function
 
-    public function deleteSignature($user_id){
+    public function deleteSignature($user_id)
+    {
         $st = $this->con->prepare("UPDATE accounts SET signature = NULL where user_id = ?");
         $st->bind_param("s", $user_id);
         if ($st->execute()) {
             return true;
         } else {
+            return false;
+        }
+    }
+
+    //DEACTIVATE USER
+    public function deactivateUser($user_id)
+    {
+        $stmt = $this->con->prepare("UPDATE accounts SET acc_status = 'Deactivated' WHERE user_id = ?");
+        $stmt->bind_param("s", $user_id);
+        if ($stmt->execute()) {
+            $stmt->close();
+            return true;
+        } else {
+            $stmt->close();
             return false;
         }
     }

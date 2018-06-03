@@ -1,17 +1,17 @@
 VERSION 5.00
 Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport4 
    Caption         =   "DataReport1"
-   ClientHeight    =   11925
-   ClientLeft      =   165
-   ClientTop       =   555
+   ClientHeight    =   10935
+   ClientLeft      =   225
+   ClientTop       =   570
    ClientWidth     =   19905
    StartUpPosition =   3  'Windows Default
    WindowState     =   2  'Maximized
-   _ExtentX        =   37465
-   _ExtentY        =   21034
+   _ExtentX        =   35110
+   _ExtentY        =   19288
    _Version        =   393216
-   _DesignerVersion=   100688210
-   ReportWidth     =   11235
+   _DesignerVersion=   100684101
+   ReportWidth     =   11091
    BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
       Name            =   "Arial"
       Size            =   8.25
@@ -21,12 +21,13 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport4
       Italic          =   0   'False
       Strikethrough   =   0   'False
    EndProperty
-   GridX           =   10
-   GridY           =   10
+   GridX           =   1
+   GridY           =   1
    LeftMargin      =   500
    RightMargin     =   500
    TopMargin       =   500
    BottomMargin    =   500
+   _Settings       =   7
    NumSections     =   5
    SectionCode0    =   1
    BeginProperty Section0 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
@@ -583,10 +584,20 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport4
    BeginProperty Section4 {1C13A8E0-A0B6-11D0-848E-00A0C90DC8A9} 
       _Version        =   393216
       Name            =   "Section5"
-      Object.Height          =   2589
-      NumControls     =   10
-      ItemType0       =   3
-      BeginProperty Item0 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      Object.Height          =   5364
+      NumControls     =   19
+      ItemType0       =   7
+      BeginProperty Item0 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Image3"
+         Object.Left            =   660
+         Object.Top             =   465
+         Object.Width           =   1800
+         Object.Height          =   1335
+         SizeMode        =   1
+      EndProperty
+      ItemType1       =   3
+      BeginProperty Item1 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Label19"
          Object.Left            =   144
@@ -604,12 +615,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport4
          EndProperty
          Object.Caption         =   "I certify that the peripherals requested above are necessary and will be used solely for the purposes stated."
       EndProperty
-      ItemType1       =   3
-      BeginProperty Item1 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType2       =   3
+      BeginProperty Item2 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Label20"
-         Object.Left            =   144
-         Object.Top             =   1152
+         Object.Left            =   45
+         Object.Top             =   1755
          Object.Width           =   2880
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -624,12 +635,11 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport4
          Object.Caption         =   "(Signiture of Requisitioner)"
          Alignment       =   2
       EndProperty
-      ItemType2       =   3
-      BeginProperty Item2 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType3       =   3
+      BeginProperty Item3 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Label21"
-         Object.Left            =   144
-         Object.Top             =   2016
+         Object.Top             =   3705
          Object.Width           =   2880
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -644,12 +654,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport4
          Object.Caption         =   "Mrs. Noemi Reyes"
          Alignment       =   2
       EndProperty
-      ItemType3       =   3
-      BeginProperty Item3 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType4       =   3
+      BeginProperty Item4 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Label22"
-         Object.Left            =   7632
-         Object.Top             =   1152
+         Object.Left            =   7530
+         Object.Top             =   1755
          Object.Width           =   2880
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -664,12 +674,12 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport4
          Object.Caption         =   "(Received)"
          Alignment       =   2
       EndProperty
-      ItemType4       =   3
-      BeginProperty Item4 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType5       =   3
+      BeginProperty Item5 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Label23"
-         Object.Left            =   7632
-         Object.Top             =   2016
+         Object.Left            =   7485
+         Object.Top             =   3705
          Object.Width           =   2880
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -684,12 +694,11 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport4
          Object.Caption         =   "Date"
          Alignment       =   2
       EndProperty
-      ItemType5       =   3
-      BeginProperty Item5 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+      ItemType6       =   3
+      BeginProperty Item6 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Label24"
-         Object.Left            =   144
-         Object.Top             =   2304
+         Object.Top             =   3990
          Object.Width           =   2880
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -704,37 +713,167 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport4
          Object.Caption         =   "Dean"
          Alignment       =   2
       EndProperty
-      ItemType6       =   5
-      BeginProperty Item6 {1C13A8E3-A0B6-11D0-848E-00A0C90DC8A9} 
-         _Version        =   393216
-         Name            =   "Line1"
-         Object.Left            =   144
-         Object.Top             =   2016
-         Object.Width           =   3024
-      EndProperty
       ItemType7       =   5
       BeginProperty Item7 {1C13A8E3-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
-         Name            =   "Line2"
-         Object.Left            =   144
-         Object.Top             =   1152
-         Object.Width           =   3030
+         Name            =   "Line1"
+         Object.Top             =   3705
+         Object.Width           =   3015
       EndProperty
       ItemType8       =   5
       BeginProperty Item8 {1C13A8E3-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
-         Name            =   "Line3"
-         Object.Left            =   7632
-         Object.Top             =   1152
+         Name            =   "Line2"
+         Object.Left            =   45
+         Object.Top             =   1755
          Object.Width           =   3030
       EndProperty
       ItemType9       =   5
       BeginProperty Item9 {1C13A8E3-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
-         Name            =   "Line4"
-         Object.Left            =   7632
-         Object.Top             =   2016
+         Name            =   "Line3"
+         Object.Left            =   7530
+         Object.Top             =   1755
          Object.Width           =   3030
+      EndProperty
+      ItemType10      =   5
+      BeginProperty Item10 {1C13A8E3-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Line4"
+         Object.Left            =   7485
+         Object.Top             =   3705
+         Object.Width           =   3030
+      EndProperty
+      ItemType11      =   3
+      BeginProperty Item11 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "date_approved"
+         Object.Left            =   7980
+         Object.Top             =   3330
+         Object.Width           =   2100
+         Object.Height          =   315
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   9
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Alignment       =   2
+      EndProperty
+      ItemType12      =   3
+      BeginProperty Item12 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "genBy"
+         Object.Top             =   4665
+         Object.Width           =   1440
+         Object.Height          =   240
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   9
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+      EndProperty
+      ItemType13      =   7
+      BeginProperty Item13 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Image4"
+         Object.Left            =   8175
+         Object.Top             =   495
+         Object.Width           =   1800
+         Object.Height          =   1335
+         SizeMode        =   1
+      EndProperty
+      ItemType14      =   7
+      BeginProperty Item14 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Image5"
+         Object.Left            =   675
+         Object.Top             =   2475
+         Object.Width           =   1800
+         Object.Height          =   1335
+         SizeMode        =   1
+      EndProperty
+      ItemType15      =   3
+      BeginProperty Item15 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Label27"
+         Object.Top             =   4650
+         Object.Width           =   4065
+         Object.Height          =   240
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "Label12"
+      EndProperty
+      ItemType16      =   3
+      BeginProperty Item16 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Label25"
+         Object.Left            =   9900
+         Object.Top             =   4605
+         Object.Width           =   585
+         Object.Height          =   240
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   " Of "
+      EndProperty
+      ItemType17      =   3
+      BeginProperty Item17 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Label26"
+         Object.Left            =   9525
+         Object.Top             =   4605
+         Object.Width           =   480
+         Object.Height          =   240
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "%p"
+      EndProperty
+      ItemType18      =   3
+      BeginProperty Item18 {1C13A8E1-A0B6-11D0-848E-00A0C90DC8A9} 
+         _Version        =   393216
+         Name            =   "Label30"
+         Object.Left            =   10320
+         Object.Top             =   4605
+         Object.Width           =   540
+         Object.Height          =   240
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Object.Caption         =   "%P"
       EndProperty
    EndProperty
 End

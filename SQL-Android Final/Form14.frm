@@ -24,13 +24,20 @@ Begin VB.Form Form14
    ScaleWidth      =   9750
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.ComboBox Combo8 
+      Height          =   345
+      Left            =   465
+      TabIndex        =   19
+      Top             =   2280
+      Width           =   5700
+   End
    Begin VB.ComboBox Combo7 
       Height          =   345
       ItemData        =   "Form14.frx":A5D68
       Left            =   7800
       List            =   "Form14.frx":A5D6F
-      TabIndex        =   19
-      Top             =   4680
+      TabIndex        =   18
+      Top             =   4695
       Visible         =   0   'False
       Width           =   735
    End
@@ -39,7 +46,7 @@ Begin VB.Form Form14
       ItemData        =   "Form14.frx":A5D76
       Left            =   7800
       List            =   "Form14.frx":A5D7D
-      TabIndex        =   18
+      TabIndex        =   17
       Top             =   3960
       Visible         =   0   'False
       Width           =   735
@@ -49,7 +56,7 @@ Begin VB.Form Form14
       ItemData        =   "Form14.frx":A5D84
       Left            =   7800
       List            =   "Form14.frx":A5D8B
-      TabIndex        =   17
+      TabIndex        =   16
       Top             =   3240
       Visible         =   0   'False
       Width           =   735
@@ -65,7 +72,7 @@ Begin VB.Form Form14
       Caption         =   "Browse"
       Height          =   495
       Left            =   7320
-      TabIndex        =   16
+      TabIndex        =   15
       Top             =   5520
       Width           =   1935
    End
@@ -73,7 +80,7 @@ Begin VB.Form Form14
       Height          =   495
       Left            =   480
       Locked          =   -1  'True
-      TabIndex        =   14
+      TabIndex        =   13
       Text            =   " "
       Top             =   5520
       Width           =   6855
@@ -83,7 +90,7 @@ Begin VB.Form Form14
       ItemData        =   "Form14.frx":A5D92
       Left            =   480
       List            =   "Form14.frx":A5D99
-      TabIndex        =   12
+      TabIndex        =   11
       Top             =   4680
       Width           =   8655
    End
@@ -92,7 +99,7 @@ Begin VB.Form Form14
       ItemData        =   "Form14.frx":A5DA0
       Left            =   480
       List            =   "Form14.frx":A5DA7
-      TabIndex        =   10
+      TabIndex        =   9
       Top             =   3960
       Width           =   8655
    End
@@ -101,7 +108,7 @@ Begin VB.Form Form14
       ItemData        =   "Form14.frx":A5DAE
       Left            =   480
       List            =   "Form14.frx":A5DB5
-      TabIndex        =   8
+      TabIndex        =   7
       Top             =   3240
       Width           =   8655
    End
@@ -110,7 +117,7 @@ Begin VB.Form Form14
       ItemData        =   "Form14.frx":A5DBC
       Left            =   6240
       List            =   "Form14.frx":A5DC3
-      TabIndex        =   7
+      TabIndex        =   6
       Top             =   2280
       Width           =   1215
    End
@@ -118,7 +125,7 @@ Begin VB.Form Form14
       Caption         =   "Cancel"
       Height          =   615
       Left            =   6960
-      TabIndex        =   6
+      TabIndex        =   5
       Top             =   6240
       Width           =   2295
    End
@@ -126,16 +133,9 @@ Begin VB.Form Form14
       Caption         =   "Save"
       Height          =   615
       Left            =   4920
-      TabIndex        =   5
+      TabIndex        =   4
       Top             =   6240
       Width           =   1935
-   End
-   Begin VB.TextBox Text2 
-      Height          =   495
-      Left            =   480
-      TabIndex        =   1
-      Top             =   2280
-      Width           =   5655
    End
    Begin VB.TextBox Text1 
       Height          =   495
@@ -160,7 +160,7 @@ Begin VB.Form Form14
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Left            =   480
-      TabIndex        =   15
+      TabIndex        =   14
       Top             =   5160
       Width           =   4215
    End
@@ -179,7 +179,7 @@ Begin VB.Form Form14
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Left            =   480
-      TabIndex        =   13
+      TabIndex        =   12
       Top             =   4440
       Width           =   4215
    End
@@ -198,7 +198,7 @@ Begin VB.Form Form14
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Left            =   480
-      TabIndex        =   11
+      TabIndex        =   10
       Top             =   3720
       Width           =   4215
    End
@@ -217,7 +217,7 @@ Begin VB.Form Form14
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Left            =   480
-      TabIndex        =   9
+      TabIndex        =   8
       Top             =   3000
       Width           =   4215
    End
@@ -236,7 +236,7 @@ Begin VB.Form Form14
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Left            =   6240
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   2040
       Width           =   4215
    End
@@ -255,7 +255,7 @@ Begin VB.Form Form14
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Left            =   480
-      TabIndex        =   3
+      TabIndex        =   2
       Top             =   1920
       Width           =   4215
    End
@@ -274,7 +274,7 @@ Begin VB.Form Form14
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Left            =   480
-      TabIndex        =   2
+      TabIndex        =   1
       Top             =   960
       Width           =   4215
    End
@@ -284,7 +284,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
 
 Private Sub Combo1_KeyPress(KeyAscii As Integer)
 KeyAscii = 0
@@ -318,18 +317,41 @@ KeyAscii = 0
 Beep
 End Sub
 
+
+
+Private Sub Combo8_KeyPress(KeyAscii As Integer)
+    KeyAscii = AutoMatchCBBox(Combo8, KeyAscii)
+End Sub
+
 Private Sub Command1_Click()
 If Text1.Text = "" Then
     MsgBox "Empty fields not allowed", vbExclamation
     Text1.SetFocus
     Exit Sub
 End If
-If Text2.Text = "" Then
+If Trim(Combo8.Text) = "" Then
     MsgBox "Empty fields not allowed", vbExclamation
-    Text2.SetFocus
+    Combo8.SetFocus
     Exit Sub
+Else
+    Dim selected_room_name As String
+    selected_room_name = Combo2.Text & " " & Text1.Text
+    Set rs2 = Nothing
+    If form_type = "modify" Then
+        Call set_rec_getData2(rs2, cn, "select rooms.room_name from room left join ( select room_name, room_id from (select CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.room_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = room.room_id where rooms.room_name = '" & selected_room_name & "' and not room.room_id = '" & selected_id & "'")
+        If Not rs2.RecordCount = 0 Then
+            MsgBox selected_room_name & " room already exists!", vbExclamation
+            Exit Sub
+        End If
+    Else
+        Call set_rec_getData2(rs2, cn, "select rooms.room_name from room left join ( select room_name, room_id from (select CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.room_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = room.room_id where rooms.room_name = '" & selected_room_name & "'")
+        If Not rs2.RecordCount = 0 Then
+            MsgBox selected_room_name & " room already exists!", vbExclamation
+            Exit Sub
+        End If
+    End If
 End If
-If Combo1.Text = "" Then
+If Trim(Combo1.Text) = "" Then
     MsgBox "Empty fields not allowed", vbExclamation
     Combo1.SetFocus
     Exit Sub
@@ -339,44 +361,46 @@ If Combo2.Text = "" Then
     Combo2.SetFocus
     Exit Sub
 End If
-If Combo3.Text = "" Then
-    MsgBox "Empty fields not allowed", vbExclamation
-    Combo3.SetFocus
-    Exit Sub
-End If
-If Combo4.Text = "" Then
-    MsgBox "Empty fields not allowed", vbExclamation
-    Combo4.SetFocus
-    Exit Sub
-End If
+'If Combo3.Text = "" Then
+'    MsgBox "Empty fields not allowed", vbExclamation
+'    Combo3.SetFocus
+'    Exit Sub
+'End If
+'If Combo4.Text = "" Then
+'    MsgBox "Empty fields not allowed", vbExclamation
+'    Combo4.SetFocus
+'    Exit Sub
+'End If
 If form_type = "modify" Then
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "update room set dept_id = '" & Combo5.Text & "', room_custodian_id = '" & Combo6.Text & "', room_technician_id = '" & Combo7.Text & "', room_name = '" & Text1.Text & "',  building = '" & Text2.Text & "',floor = '" & Combo1.Text & "',room_schedule = '" & Text3.Text & "' where room_id = '" & selected_id & "'")
-MsgBox "Rooms Updated!", vbInformation
-Unload Me
+    Set rs = Nothing
+    If Trim(Combo3.Text) = "" Or Trim(Combo4.Text) = "" Then
+        If Trim(Combo3.Text) = "" Then
+            Call set_rec_getData(rs, cn, "update room set dept_id = NULL, room_custodian_id = '" & Combo7.Text & "', room_technician_id = NULL, room_name = '" & Text1.Text & "',  building = '" & Trim(Combo8.Text) & "',floor = '" & Trim(Combo1.Text) & "',room_schedule = '" & image_name & "' where room_id = '" & selected_id & "'")
+        End If
+        If Trim(Combo4.Text) = "" Then
+            Call set_rec_getData(rs, cn, "update room set dept_id = NULL, room_custodian_id = NULL, room_technician_id = '" & Combo6.Text & "', room_name = '" & Text1.Text & "',  building = '" & Trim(Combo8.Text) & "',floor = '" & Trim(Combo1.Text) & "',room_schedule = '" & image_name & "' where room_id = '" & selected_id & "'")
+        End If
+    Else
+        Call set_rec_getData(rs, cn, "update room set dept_id = '" & Combo5.Text & "', room_custodian_id = '" & Combo7.Text & "', room_technician_id = '" & Combo6.Text & "', room_name = '" & Text1.Text & "',  building = '" & Trim(Combo8.Text) & "',floor = '" & Trim(Combo1.Text) & "',room_schedule = '" & image_name & "' where room_id = '" & selected_id & "'")
+    End If
+    
+    MsgBox "Rooms Updated!", vbInformation
+    Unload Me
 ElseIf form_type = "create" Then
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "INSERT INTO room (dept_id, room_custodian_id,room_technician_id, room_name,building,floor,room_schedule) VALUES ('" & Combo5.Text & "', '" & Combo6.Text & "', '" & Combo7.Text & "' , '" & Text1.Text & "' , '" & Text2.Text & "' , '" & Combo1.Text & "' , '" & Text3.Text & "')")
-MsgBox "Room Saved!", vbInformation
-Unload Me
-ElseIf form_type = "profile" Then
-current_user = Text3.Text
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "INSERT INTO users (user_id, email,name, phone,role) VALUES ('" & Text1.Text & "', '" & Text5.Text & "', '" & Text2.Text & "' , '" & Text6.Text & "' ,'" & Combo1.Text & "')")
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "INSERT INTO accounts (user_id, username, password,date_created,date_expire,acc_status) VALUES ('" & Text1.Text & "', '" & Text3.Text & "', AES_ENCRYPT('" & Text4.Text & "','cictpassword'), now()  ,DATE_SUB(now(), INTERVAL 5 month),'Active')")
-MsgBox "Employees Saved!", vbInformation
-Unload Me
-ElseIf form_type = "request" Then
-current_user = Text3.Text
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "INSERT INTO users (user_id, email,name, phone,role) VALUES ('" & Text1.Text & "', '" & Text5.Text & "', '" & Text2.Text & "' , '" & Text6.Text & "' ,'" & Combo1.Text & "')")
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "INSERT INTO accounts (user_id, username, password,date_created,date_expire,acc_status) VALUES ('" & Text1.Text & "', '" & Text3.Text & "', AES_ENCRYPT('" & Text4.Text & "','cictpassword'), now()  ,DATE_SUB(now(), INTERVAL 5 month),'Active')")
-MsgBox "Employee Request Accepted!", vbInformation
-Set rs = Nothing
-Call set_rec_getData(rs, cn, "delete from request_account where id = '" & selected_id & "'")
-Unload Me
+    Set rs = Nothing
+    If Trim(Combo3.Text) = "" Or Trim(Combo4.Text) = "" Then
+        If Trim(Combo3.Text) = "" Then
+          Call set_rec_getData(rs, cn, "INSERT INTO room (dept_id, room_custodian_id,room_technician_id, room_name,building,floor,room_schedule) VALUES ('" & Combo5.Text & "', '" & Combo7.Text & "', NULL , '" & Text1.Text & "' , '" & Trim(Combo8.Text) & "' , '" & Trim(Combo1.Text) & "' , '" & image_name & "')")
+        End If
+        If Trim(Combo4.Text) = "" Then
+            Call set_rec_getData(rs, cn, "INSERT INTO room (dept_id, room_custodian_id,room_technician_id, room_name,building,floor,room_schedule) VALUES ('" & Combo5.Text & "', NULL, '" & Combo6.Text & "' , '" & Text1.Text & "' , '" & Trim(Combo8.Text) & "' , '" & Trim(Combo1.Text) & "' , '" & image_name & "')")
+        End If
+    Else
+       Call set_rec_getData(rs, cn, "INSERT INTO room (dept_id, room_custodian_id,room_technician_id, room_name,building,floor,room_schedule) VALUES ('" & Combo5.Text & "', '" & Combo7.Text & "', '" & Combo6.Text & "' , '" & Text1.Text & "' , '" & Trim(Combo8.Text) & "' , '" & Trim(Combo1.Text) & "' , '" & image_name & "')")
+    End If
+    
+    MsgBox "Room Saved!", vbInformation
+    Unload Me
 End If
 'INSERT INTO testtable VALUE(AES_ENCRYPT('mytext','passw'));
 End Sub
@@ -388,46 +412,70 @@ End Sub
 Private Sub Command3_Click()
 On Error Resume Next
 cd1.ShowOpen
-FileCopy cd1.FileName, "http://" & Server & "\images\" & cd1.FileTitle
+Dim random As Integer
+random = Rnd(10000)
+image_name = random & "_" & cd1.FileTitle
+FileCopy cd1.FileName, App.Path & "\images\" & image_name
 Text3.Text = cd1.FileTitle
 End Sub
 
 Private Sub Form_Load()
+Combo8.Clear
+Set rs = Nothing
+Call set_rec_getData(rs, cn, "Select distinct building from room")
+If Not rs.RecordCount = 0 Then
+ rs.MoveFirst
+ While Not rs.EOF
+    Combo8.AddItem Trim(rs.Fields("building"))
+    rs.MoveNext
+ Wend
+End If
+'combo 234 = depat, tech, cust
+'combo 567 = ids
+
+If Not current_role = "Admin" Then
+    Combo4.Enabled = False
+    Combo7.Enabled = False
+End If
+'department
  Set rs = Nothing
     Call set_rec_getData(rs, cn, "SELECT * FROM department")
     Combo2.Clear
     Combo5.Clear
     If Not rs.RecordCount = 0 Then
-    rs.MoveFirst
-    While Not rs.EOF
-    Combo2.AddItem rs.Fields("dept_name")
-    Combo5.AddItem rs.Fields("dept_id")
-    rs.MoveNext
-    Wend
+        rs.MoveFirst
+        While Not rs.EOF
+        Combo2.AddItem rs.Fields("dept_name")
+        Combo5.AddItem rs.Fields("dept_id")
+        rs.MoveNext
+        Wend
     End If
-     Set rs = Nothing
-    Call set_rec_getData(rs, cn, "SELECT * FROM users")
+
+'room tech
+    Set rs = Nothing
+    Call set_rec_getData(rs, cn, "SELECT * FROM users where role = 'Technician'")
     Combo3.Clear
     Combo6.Clear
     If Not rs.RecordCount = 0 Then
-    rs.MoveFirst
-    While Not rs.EOF
-    Combo3.AddItem rs.Fields("name")
-    Combo6.AddItem rs.Fields("user_id")
-    rs.MoveNext
-    Wend
+        rs.MoveFirst
+        While Not rs.EOF
+            Combo3.AddItem rs.Fields("name")
+            Combo6.AddItem rs.Fields("user_id")
+        rs.MoveNext
+        Wend
     End If
+'room cust
      Set rs = Nothing
-    Call set_rec_getData(rs, cn, "SELECT * FROM users")
+    Call set_rec_getData(rs, cn, "select * from users u where not exists(select null from room r where r.room_custodian_id = u.user_id) and role = 'Custodian'")
     Combo4.Clear
     Combo7.Clear
     If Not rs.RecordCount = 0 Then
-    rs.MoveFirst
-    While Not rs.EOF
-    Combo4.AddItem rs.Fields("name")
-    Combo7.AddItem rs.Fields("user_id")
-    rs.MoveNext
-    Wend
+        rs.MoveFirst
+        While Not rs.EOF
+        Combo4.AddItem rs.Fields("name")
+        Combo7.AddItem rs.Fields("user_id")
+        rs.MoveNext
+        Wend
     End If
 Combo1.Clear
 Combo1.AddItem "1"
@@ -445,57 +493,34 @@ ElseIf form_type = "modify" Then
     Command1.Caption = "Update"
     Me.Caption = "Room Modify Form"
     Set rs = Nothing
-    Call set_rec_getData(rs, cn, "SELECT * FROM room where room_id  ='" & selected_id & "'")
+    'modify
+    '( select dept_room, concat_ws('',dept_name,'') as dept_name,room_id from (select r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'dept_room' from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = room.room_id
+    Call set_rec_getData(rs, cn, "SELECT * FROM ( select dept_room, room_name,room_custodian_id, room_technician_id,room_schedule, concat_ws('',dept_name,'') as dept_name,room_id, dept_id,floor, building from (select r.floor,department.dept_name,r.room_schedule, r.building, r.room_custodian_id, r.room_technician_id ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'dept_room',r.room_name, department.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms where rooms.room_id = '" & selected_id & "'")
         If Not rs.RecordCount = 0 Then
+            Combo2.Text = rs.Fields("dept_name")
+            If IsNull(rs.Fields("dept_id")) = False Then
+                Combo5.Text = rs.Fields("dept_id")
+            End If
             Set rs2 = Nothing
-            Call set_rec_getData2(rs2, cn, "SELECT * FROM department where dept_id  ='" & rs.Fields("dept_id") & "'")
-             Combo2.Text = rs2.Fields("dept_name")
-            Combo5.Text = rs2.Fields("dept_id")
+            If IsNull(rs.Fields("room_custodian_id")) = False Then
+                Call set_rec_getData2(rs2, cn, "SELECT * FROM users where user_id  ='" & rs.Fields("room_custodian_id") & "'")
+                Combo4.Text = rs2.Fields("name")
+                Combo7.Text = rs2.Fields("user_id")
+            End If
             Set rs2 = Nothing
-            Call set_rec_getData2(rs2, cn, "SELECT * FROM users where user_id  ='" & rs.Fields("room_custodian_id") & "'")
-            Combo3.Text = rs2.Fields("name")
-            Combo6.Text = rs2.Fields("user_id")
-            Set rs2 = Nothing
-            Call set_rec_getData2(rs2, cn, "SELECT * FROM users where user_id  ='" & rs.Fields("room_technician_id") & "'")
-            Combo4.Text = rs2.Fields("name")
-            Combo7.Text = rs2.Fields("user_id")
+            If IsNull(rs.Fields("room_technician_id")) = False Then
+                Call set_rec_getData2(rs2, cn, "SELECT * FROM users where user_id  ='" & rs.Fields("room_technician_id") & "'")
+                Combo3.Text = rs2.Fields("name")
+                Combo6.Text = rs2.Fields("user_id")
+            End If
             If IsNull(rs.Fields("room_schedule")) = False Then
             Text3.Text = rs.Fields("room_schedule")
             End If
             Text1.Text = rs.Fields("room_name")
-            Text2.Text = rs.Fields("building")
+            Combo8.Text = rs.Fields("building")
             Combo1.Text = rs.Fields("floor")
             
-            
         End If
-ElseIf form_type = "profile" Then
-    Command1.Caption = "Update"
-    Me.Caption = "Employee Modify Form - " & selected_name
-    Set rs = Nothing
-    Call set_rec_getData(rs, cn, "SELECT * FROM users LEFT JOIN accounts ON users.user_id = accounts.user_id where users.user_id ='" & current_id & "'")
-    If Not rs.RecordCount = 0 Then
-        Text1.Text = rs.Fields("user_id")
-        Text2.Text = rs.Fields("name")
-        Text3.Text = rs.Fields("username")
-        Text4.Text = ""
-        Text5.Text = rs.Fields("email")
-        Text6.Text = rs.Fields("phone")
-        Combo1.Text = rs.Fields("role")
-        Combo1.Enabled = False
-    End If
-ElseIf form_type = "request" Then
-    Command1.Caption = "Update"
-    Me.Caption = "Add Employee Request Form - " & selected_name
-    Set rs = Nothing
-    Call set_rec_getData(rs, cn, "SELECT *,CAST(AES_DECRYPT(password, 'cictpassword') AS CHAR(50)) as b from request_account where id = '" & selected_id & "'")
-    
-        Text4.Text = rs.Fields("b")
-        Text4.Enabled = False
-        Text1.Text = rs.Fields("id")
-        Text1.Enabled = False
-        Text3.Text = rs.Fields("username")
-        Text3.Enabled = False
-        
 End If
 
 End Sub

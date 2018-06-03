@@ -12,21 +12,26 @@ Global selected_request As String
 Global selected_name As String
 Global rs As New ADODB.Recordset
 Global rs2 As New ADODB.Recordset
+Global rs3 As New ADODB.Recordset
+Global rs4 As New ADODB.Recordset
 Global cn As New ADODB.Connection
 Global form_type As String
+Global image_name As String
+Global tooltip_text As String
+
 Public Function ConnectMySQL()
 Dim Server As String
-Dim User As String
+Dim user As String
 Dim Password As String
 Dim Database As String
 'On Error GoTo errhandler
 
 cn.CursorLocation = adUseClient
-Server = "192.168.0.12"
-User = "user"
+Server = "localhost"
+user = "user"
 Password = "naraCapstone"
 Database = "cict"
-cn.Open "DRIVER={MySQL ODBC 5.3 Unicode Driver};Server=" & Server & ";UID=" & User & ";PWD=" & Password & ";Database=" & Database
+cn.Open "DRIVER={MySQL ODBC 5.3 Unicode Driver};Server=" & Server & ";UID=" & user & ";PWD=" & Password & ";Database=" & Database
 
 
 Exit Function
@@ -48,6 +53,19 @@ End With
 End Sub
 Public Sub set_rec_getData2(ByRef sRecordset As ADODB.Recordset, ByRef sConnection As ADODB.Connection, ByVal sSQL As String)
 With rs2
+    .CursorLocation = adUseClient
+    .Open sSQL, sConnection, adOpenKeyset, adLockOptimistic
+End With
+End Sub
+Public Sub set_rec_getData3(ByRef sRecordset As ADODB.Recordset, ByRef sConnection As ADODB.Connection, ByVal sSQL As String)
+With rs3
+    .CursorLocation = adUseClient
+    .Open sSQL, sConnection, adOpenKeyset, adLockOptimistic
+End With
+End Sub
+
+Public Sub set_rec_getData4(ByRef sRecordset As ADODB.Recordset, ByRef sConnection As ADODB.Connection, ByVal sSQL As String)
+With rs4
     .CursorLocation = adUseClient
     .Open sSQL, sConnection, adOpenKeyset, adLockOptimistic
 End With
