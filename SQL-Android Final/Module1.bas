@@ -27,10 +27,10 @@ Dim Database As String
 'On Error GoTo errhandler
 
 cn.CursorLocation = adUseClient
-Server = "localhost"
-user = "user"
-Password = "naraCapstone"
-Database = "cict"
+Server = "localhost" '\\ip address\folder
+user = "user" 'user - id4894450_root
+Password = "naraCapstone" 'naraCapstone
+Database = "cict" 'id4894450_cict - cict
 cn.Open "DRIVER={MySQL ODBC 5.3 Unicode Driver};Server=" & Server & ";UID=" & user & ";PWD=" & Password & ";Database=" & Database
 
 

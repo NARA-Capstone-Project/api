@@ -381,9 +381,14 @@ If form_type = "modify" Then
             Call set_rec_getData(rs, cn, "update room set dept_id = NULL, room_custodian_id = NULL, room_technician_id = '" & Combo6.Text & "', room_name = '" & Text1.Text & "',  building = '" & Trim(Combo8.Text) & "',floor = '" & Trim(Combo1.Text) & "',room_schedule = '" & image_name & "' where room_id = '" & selected_id & "'")
         End If
     Else
-        Call set_rec_getData(rs, cn, "update room set dept_id = '" & Combo5.Text & "', room_custodian_id = '" & Combo7.Text & "', room_technician_id = '" & Combo6.Text & "', room_name = '" & Text1.Text & "',  building = '" & Trim(Combo8.Text) & "',floor = '" & Trim(Combo1.Text) & "',room_schedule = '" & image_name & "' where room_id = '" & selected_id & "'")
+       Call set_rec_getData(rs, cn, "update room set dept_id = '" & Combo5.Text & "', room_custodian_id = '" & Combo7.Text & "', room_technician_id = '" & Combo6.Text & "', room_name = '" & Text1.Text & "',  building = '" & Trim(Combo8.Text) & "',floor = '" & Trim(Combo1.Text) & "',room_schedule = '" & image_name & "' where room_id = '" & selected_id & "'")
     End If
-    
+    'image
+     If Text3.Text = "" Then
+            Set rs = Nothing
+            Call set_rec_getData(rs, cn, "update room set room_schedule = NULL where room_id = '" & selected_id & "'")
+     End If
+            
     MsgBox "Rooms Updated!", vbInformation
     Unload Me
 ElseIf form_type = "create" Then
@@ -398,7 +403,11 @@ ElseIf form_type = "create" Then
     Else
        Call set_rec_getData(rs, cn, "INSERT INTO room (dept_id, room_custodian_id,room_technician_id, room_name,building,floor,room_schedule) VALUES ('" & Combo5.Text & "', '" & Combo7.Text & "', '" & Combo6.Text & "' , '" & Text1.Text & "' , '" & Trim(Combo8.Text) & "' , '" & Trim(Combo1.Text) & "' , '" & image_name & "')")
     End If
-    
+    'image
+     If Text3.Text = "" Then
+            Set rs = Nothing
+            Call set_rec_getData(rs, cn, "update room set room_schedule = NULL where room_id = '" & selected_id & "'")
+     End If
     MsgBox "Room Saved!", vbInformation
     Unload Me
 End If
