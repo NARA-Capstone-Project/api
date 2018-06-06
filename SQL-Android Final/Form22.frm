@@ -422,6 +422,15 @@ End If
 End Sub
 
 
+Private Sub Form_Unload(Cancel As Integer)
+If form_type = "create" Then
+    Form9.cmdfill.Value = True
+    Form9.Combo1.Clear
+    Form9.Combo2.Clear
+    Form9.Combo3.Clear
+End If
+End Sub
+
 Private Sub Text3_GotFocus()
 showtoolTip Text3
 End Sub
