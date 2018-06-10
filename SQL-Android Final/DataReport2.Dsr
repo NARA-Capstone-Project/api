@@ -800,6 +800,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport2
             Strikethrough   =   0   'False
          EndProperty
          DataField       =   "processor"
+         CanGrow         =   -1  'True
          Alignment       =   2
          BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
             Type            =   0
@@ -1004,6 +1005,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport2
             Strikethrough   =   0   'False
          EndProperty
          DataField       =   "status"
+         CanGrow         =   -1  'True
          Alignment       =   2
          BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
             Type            =   0

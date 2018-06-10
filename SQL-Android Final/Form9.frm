@@ -83,7 +83,7 @@ Begin VB.Form Form9
       Left            =   1440
       List            =   "Form9.frx":261E0
       TabIndex        =   4
-      Top             =   1080
+      Top             =   1110
       Width           =   2535
    End
    Begin VB.CommandButton Command2 
@@ -96,9 +96,9 @@ Begin VB.Form Form9
    End
    Begin MSFlexGridLib.MSFlexGrid fgrid1 
       Height          =   7545
-      Left            =   315
+      Left            =   300
       TabIndex        =   0
-      Top             =   1980
+      Top             =   2025
       Width           =   19215
       _ExtentX        =   33893
       _ExtentY        =   13309
@@ -211,7 +211,6 @@ End If
 End Sub
 
 Private Sub Combo1_Click()
-Command3.Enabled = False
 If Combo1.ListIndex = 0 Then
     Combo2.Clear
     Combo3.Clear
@@ -247,8 +246,11 @@ ElseIf Combo1.ListIndex = 2 Then
     Wend
     End If
 End If
-End Sub
 
+If Combo2.Text = "" Then
+    Command3.Enabled = False
+End If
+End Sub
 
 Private Sub Combo2_Change()
 If Combo2.Text = "" Then
@@ -315,11 +317,8 @@ Else
                 Command3.Enabled = False
             End If
     End If
-
 End If
 End Sub
-
-
 
 
 
@@ -335,8 +334,9 @@ Form5.Show
 End Sub
 
 Private Sub Command3_Click()
+
 If Combo1.Text = "" Then
-    'report all
+ 'report all
     Set rs = Nothing
     Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id order by room_name desc ")
         Set DataReport3.DataSource = rs
@@ -520,7 +520,7 @@ End Sub
 
 Private Sub Text1_Change()
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id where `os` like '%" & Text1.Text & "%' or `model` like '%" & Text1.Text & "%' or `processor` like '%" & Text1.Text & "%' or `motherboard` like '%" & Text1.Text & "%' order by a.comp_id desc")
+Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id where `os` like '%" & Text1.Text & "%' or `model` like '%" & Text1.Text & "%' or `processor` like '%" & Text1.Text & "%' or `motherboard` like '%" & Text1.Text & "%' order by a.comp_id desc ")
 
 fillfgrid
 End Sub
