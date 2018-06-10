@@ -250,7 +250,7 @@ Combo3.Clear
 Combo4.Clear
 If Combo1.ListIndex = 0 Then 'assessment report
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id")
+Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id order by a.date desc")
 fillfgrid
 Combo2.Clear
 Combo2.AddItem "Custodian"
@@ -262,7 +262,7 @@ Combo2.AddItem "Report Type"
 
 ElseIf Combo1.ListIndex = 1 Then 'request peripherals
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id ")
+Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id order by a.date_requested desc")
 fillfgrid2
 Combo2.Clear
 Combo2.AddItem "Custodian"
@@ -325,13 +325,13 @@ If Combo1.ListIndex = 0 Then
             rs2.MoveNext
             Wend
         End If
-    ElseIf Combo2.ListIndex = 2 Then
-        Call set_rec_getData2(rs2, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id")
+    ElseIf Combo2.ListIndex = 2 Then 'date
+        Call set_rec_getData2(rs2, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id  order by a.date desc")
         If Not rs2.RecordCount = 0 Then
             Combo3.Clear
             rs2.MoveFirst
             While Not rs2.EOF
-            Combo3.AddItem Format(rs2.Fields("date"), "YYYY-MM-DD")
+                Combo3.AddItem Format(rs2.Fields("date"), "YYYY-MM-DD")
             rs2.MoveNext
             Wend
         End If
@@ -351,7 +351,7 @@ If Combo1.ListIndex = 0 Then
        Combo3.Clear
        Combo4.Clear
        Combo3.AddItem "Inventory Report"
-       Combo3.AddItem "Repair Report"
+       Combo3.AddItem "Repaired Report"
     End If
 ElseIf Combo1.ListIndex = 1 Then
     If Combo2.ListIndex = 0 Then
@@ -372,7 +372,7 @@ ElseIf Combo1.ListIndex = 1 Then
         Combo3.AddItem "Issued"
         Combo3.AddItem "Cancelled"
     ElseIf Combo2.ListIndex = 2 Then
-        Call set_rec_getData2(rs2, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id ")
+        Call set_rec_getData2(rs2, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id order by a.date_requested desc ")
         If Not rs2.RecordCount = 0 Then
             Combo3.Clear
             rs2.MoveFirst
@@ -407,48 +407,48 @@ Set rs = Nothing
 If Combo1.ListIndex = 0 Then
 If Combo2.ListIndex = 0 Then
 Combo4.ListIndex = Combo3.ListIndex
-    Call set_rec_getData(rs, cn, "SELECT *,c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where custodian_id = '" & Combo4.Text & "'")
+    Call set_rec_getData(rs, cn, "SELECT *,c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where custodian_id = '" & Combo4.Text & "'  order by a.date desc")
    
     Call fillfgrid
 ElseIf Combo2.ListIndex = 1 Then
 Combo4.ListIndex = Combo3.ListIndex
-    Call set_rec_getData(rs, cn, "SELECT *,c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where technician_id = '" & Combo4.Text & "'")
+    Call set_rec_getData(rs, cn, "SELECT *,c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where technician_id = '" & Combo4.Text & "' order by a.date desc")
     
     Call fillfgrid
 ElseIf Combo2.ListIndex = 2 Then
-    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where `date` = '" & Combo3.Text & "'")
+    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where `date` = '" & Combo3.Text & "' order by a.date desc")
     
     Call fillfgrid
 ElseIf Combo2.ListIndex = 3 Then
 Combo4.ListIndex = Combo3.ListIndex
-    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where e.room_id = '" & Combo4.Text & "'")
+    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where e.room_id = '" & Combo4.Text & "' order by a.date desc")
     
     Call fillfgrid
 ElseIf Combo2.ListIndex = 4 Then
-
-    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a  LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where category = '" & Combo3.Text & "'")
+'repair
+Dim cat As String
+cat = "Repair Report"
+    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a  LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where category = '" & cat & "' order by a.date desc")
     
     Call fillfgrid
 End If
 ElseIf Combo1.ListIndex = 1 Then
 If Combo2.ListIndex = 0 Then
 Combo4.ListIndex = Combo3.ListIndex
-    Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id  where requisitioner = '" & Combo4.Text & "'")
-    
+    Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id  where requisitioner = '" & Combo4.Text & "' order by a.date_requested desc")
     Call fillfgrid2
 ElseIf Combo2.ListIndex = 1 Then
 Combo4.ListIndex = Combo3.ListIndex
-    Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id  where req_status = '" & Combo3.Text & "'")
+    Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id  where req_status = '" & Combo3.Text & "' order by a.date_requested desc")
     
     Call fillfgrid2
 ElseIf Combo2.ListIndex = 2 Then
-    Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id  where `date_requested` = '" & Combo3.Text & "'")
+    Call set_rec_getData(rs, cn, "SELECT *,c.name as req,d.name as tech FROM request_peripherals as a LEFT JOIN users as c ON a.requisitioner  = c.user_id LEFT OUTER JOIN users as d ON a.tech_id = d.user_id LEFT OUTER JOIN department as e ON e.dept_id = a.dept_id  where `date_requested` = '" & Combo3.Text & "' order by a.date_requested desc")
     
     Call fillfgrid2
 ElseIf Combo2.ListIndex = 3 Then
 Combo4.ListIndex = Combo3.ListIndex
-    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where e.room_id = '" & Combo4.Text & "'")
-    
+    Call set_rec_getData(rs, cn, "SELECT *, c.name as custodian, d.name as technician FROM assessment_reports as a LEFT JOIN assessment_details as b ON a.rep_id = b.rep_id LEFT JOIN users as c ON a.custodian_id = c.user_id LEFT OUTER JOIN users as d ON a.technician_id = d.user_id LEFT OUTER JOIN room as e ON e.room_id = a.room_id where e.room_id = '" & Combo4.Text & "' order by a.date desc")
     Call fillfgrid2
 End If
 End If

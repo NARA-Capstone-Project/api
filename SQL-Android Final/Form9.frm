@@ -52,7 +52,6 @@ Begin VB.Form Form9
    End
    Begin VB.CommandButton Command3 
       Caption         =   "Generate Report Base on Result"
-      Enabled         =   0   'False
       Height          =   495
       Left            =   360
       TabIndex        =   8
@@ -97,9 +96,9 @@ Begin VB.Form Form9
    End
    Begin MSFlexGridLib.MSFlexGrid fgrid1 
       Height          =   7545
-      Left            =   300
+      Left            =   315
       TabIndex        =   0
-      Top             =   2025
+      Top             =   1980
       Width           =   19215
       _ExtentX        =   33893
       _ExtentY        =   13309
@@ -198,7 +197,21 @@ Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.
 Call fillfgrid
 End Sub
 
+Private Sub Combo1_Change()
+If Combo1.Text = "" Then
+    Combo2.Clear
+    Combo3.Clear
+    Set rs = Nothing
+    Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id order by a.comp_id desc ")
+    Call fillfgrid
+    Command3.Enabled = True
+Else
+    Command3.Enabled = False
+End If
+End Sub
+
 Private Sub Combo1_Click()
+Command3.Enabled = False
 If Combo1.ListIndex = 0 Then
     Combo2.Clear
     Combo3.Clear
@@ -236,11 +249,21 @@ ElseIf Combo1.ListIndex = 2 Then
 End If
 End Sub
 
+
+Private Sub Combo2_Change()
+If Combo2.Text = "" Then
+    Set rs = Nothing
+    Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id order by a.comp_id desc ")
+    Call fillfgrid
+    Command3.Enabled = False
+End If
+End Sub
+
 Private Sub Combo2_Click()
 If Combo1.Text = "" Then
     Combo2.Clear
     Set rs = Nothing
-    Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id order by b.pc_no asc ")
+    Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id order by a.comp_id desc ")
     Call fillfgrid
 Else
     If Not Combo1.ListIndex = 0 Then
@@ -248,7 +271,7 @@ Else
         If Combo1.ListIndex = 1 Then 'status
              Set rs = Nothing
              'modified
-            Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id  where rooms.room_id ='" & Combo3.Text & "' order by b.pc_no asc")
+            Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id  where rooms.room_id ='" & Combo3.Text & "' order by a.comp_id desc")
             If Not rs.RecordCount = 0 Then
                 Command3.Enabled = True
             Else
@@ -258,7 +281,7 @@ Else
         ElseIf Combo1.ListIndex = 2 Then 'room
              Set rs = Nothing
              'modified
-            Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id where rooms.dept_id='" & Combo3.Text & "' order by b.pc_no asc")
+            Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id where rooms.dept_id='" & Combo3.Text & "' order by a.comp_id desc")
             fillfgrid
             If Not rs.RecordCount = 0 Then
                 Command3.Enabled = True
@@ -270,7 +293,7 @@ Else
         If Combo2.Text = "No Status" Then
             Set rs = Nothing
             'modified
-            Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id where comp_status is NULL order by b.pc_no asc")
+            Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id where comp_status is NULL order by a.comp_id desc")
         Else
             If Combo2.ListIndex = 0 Then
                 Set rs = Nothing
@@ -298,6 +321,8 @@ End Sub
 
 
 
+
+
 Private Sub Command1_Click()
 form_type = "create"
 'Form11.Show vbModal
@@ -310,10 +335,30 @@ Form5.Show
 End Sub
 
 Private Sub Command3_Click()
-
 If Combo1.Text = "" Then
-    Beep
-Exit Sub
+    'report all
+    Set rs = Nothing
+    Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id order by room_name desc ")
+        Set DataReport3.DataSource = rs
+        With DataReport3
+           'header
+                    With .Sections("Section4").Controls
+                            .Item("label4").Caption = "Computers In All Rooms"
+                    End With
+            'cust and tech
+                    With .Sections("Section2").Controls
+                     .Item("label8").Caption = "Total No. of Row: " & rs.RecordCount
+                    .Item("label6").Caption = ""
+                    .Item("label7").Caption = ""
+                    End With
+            'gen details
+                    With .Sections("Section3").Controls
+                        .Item("genBy").Caption = "Generated By: " & current_user_name & ", " & Date & " " & Time
+                    End With
+                End With
+        DataReport3.Show vbModal
+    'Beep
+    'Exit Sub
 End If
 If Not rs.RecordCount = 0 Then
     rs.MoveFirst
@@ -355,7 +400,7 @@ If Not rs.RecordCount = 0 Then
         'if no status
         If Combo2.Text = "No Status" Then
             Set rs = Nothing
-            Call set_rec_getData(rs, cn, "SELECT *,'No Status' as comp_status, a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id where comp_status is NULL order by b.pc_no asc")
+            Call set_rec_getData(rs, cn, "SELECT *,'No Status' as comp_status, a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id where comp_status is NULL order by a.comp_id desc")
         End If
         Set DataReport3.DataSource = rs
         With DataReport3
@@ -405,7 +450,7 @@ End Sub
 
 Private Sub fgrid1_Click()
 selected_id = fgrid1.TextMatrix(fgrid1.Row, 14)
-command4.Enabled = True
+Command4.Enabled = True
 End Sub
 
 
@@ -427,7 +472,7 @@ Set rs = Nothing
 Set cn = Nothing
 Call ConnectMySQL
 'modified
-Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id order by b.pc_no asc ")
+Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id order by a.comp_id desc ")
 Call fillfgrid
 End Sub
 Public Sub fillfgrid()
@@ -475,7 +520,7 @@ End Sub
 
 Private Sub Text1_Change()
 Set rs = Nothing
-Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id where `os` like '%" & Text1.Text & "%' or `model` like '%" & Text1.Text & "%' or `processor` like '%" & Text1.Text & "%' or `motherboard` like '%" & Text1.Text & "%' order by b.pc_no asc ")
+Call set_rec_getData(rs, cn, "SELECT *,a.comp_id as c_id,e.name as custodian, f.name as technician FROM computers as a LEFT JOIN comp_details as b ON a.comp_id = b.comp_id LEFT JOIN ( select room_name, concat_ws('',dept_name,'') as dept_name,room_id,room_custodian_id,room_technician_id, building, dept_id, floor  from (select r.room_custodian_id, r.room_technician_id,r.floor,department.dept_name, r.building ,r.room_id, CONCAT_ws(' ',department.dept_name,r.room_name) as 'room_name', r.dept_id from room r left join department on department.dept_id = r.dept_id) as rooms) rooms on rooms.room_id = b.room_id LEFT OUTER JOIN users as e ON e.user_id = rooms.room_custodian_id LEFT OUTER JOIN users as f ON f.user_id = rooms.room_technician_id where `os` like '%" & Text1.Text & "%' or `model` like '%" & Text1.Text & "%' or `processor` like '%" & Text1.Text & "%' or `motherboard` like '%" & Text1.Text & "%' order by a.comp_id desc")
 
 fillfgrid
 End Sub

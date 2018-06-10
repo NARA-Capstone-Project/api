@@ -496,7 +496,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
       BeginProperty Item18 {1C13A8E4-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Shape12"
-         Object.Left            =   5040
+         Object.Left            =   5010
          Object.Top             =   1305
          Object.Width           =   1575
          Object.Height          =   435
@@ -560,8 +560,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
       BeginProperty Item25 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Image15"
-         Object.Left            =   1605
-         Object.Top             =   150
+         Object.Left            =   1575
+         Object.Top             =   144
          Object.Width           =   5460
          Object.Height          =   435
          Object.BorderStyle     =   1
@@ -583,7 +583,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
          _Version        =   393216
          Name            =   "Image17"
          Object.Left            =   8205
-         Object.Top             =   150
+         Object.Top             =   144
          Object.Width           =   4860
          Object.Height          =   435
          Object.BorderStyle     =   1
@@ -768,7 +768,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
          _Version        =   393216
          Name            =   "Image13"
          Object.Left            =   10515
-         Object.Width           =   1335
+         Object.Width           =   1305
          Object.Height          =   420
          Object.BorderStyle     =   1
       EndProperty
@@ -788,6 +788,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
             Strikethrough   =   0   'False
          EndProperty
          DataField       =   "room_name"
+         CanGrow         =   -1  'True
          Alignment       =   2
          BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
             Type            =   0
@@ -831,8 +832,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
       BeginProperty Item11 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Text3"
-         Object.Left            =   3765
-         Object.Width           =   1245
+         Object.Left            =   3870
+         Object.Width           =   1140
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Calibri"
@@ -844,6 +845,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
             Strikethrough   =   0   'False
          EndProperty
          DataField       =   "motherboard"
+         CanGrow         =   -1  'True
          Alignment       =   2
          BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
             Type            =   0
@@ -872,6 +874,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
             Strikethrough   =   0   'False
          EndProperty
          DataField       =   "ram"
+         CanGrow         =   -1  'True
          Alignment       =   2
          BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
             Type            =   0
@@ -900,6 +903,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
             Strikethrough   =   0   'False
          EndProperty
          DataField       =   "kboard"
+         CanGrow         =   -1  'True
          Alignment       =   2
          BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
             Type            =   0
@@ -928,6 +932,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
             Strikethrough   =   0   'False
          EndProperty
          DataField       =   "mouse"
+         CanGrow         =   -1  'True
          Alignment       =   2
          BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
             Type            =   0
@@ -956,6 +961,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
             Strikethrough   =   0   'False
          EndProperty
          DataField       =   "vga"
+         CanGrow         =   -1  'True
          Alignment       =   2
          BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
             Type            =   0
@@ -971,9 +977,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
       BeginProperty Item16 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Text8"
-         Object.Left            =   10575
-         Object.Top             =   30
-         Object.Width           =   1005
+         Object.Left            =   10560
+         Object.Width           =   1230
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Calibri"
@@ -985,6 +990,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
             Strikethrough   =   0   'False
          EndProperty
          DataField       =   "HDD"
+         CanGrow         =   -1  'True
          Alignment       =   2
          BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
             Type            =   0
@@ -1041,6 +1047,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
             Strikethrough   =   0   'False
          EndProperty
          DataField       =   "monitor"
+         CanGrow         =   -1  'True
          Alignment       =   2
          BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
             Type            =   0
@@ -1065,8 +1072,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
       BeginProperty Item20 {1C13A8E5-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Image22"
-         Object.Left            =   11835
-         Object.Width           =   1245
+         Object.Left            =   11820
+         Object.Width           =   1260
          Object.Height          =   420
          Object.BorderStyle     =   1
       EndProperty
@@ -1074,8 +1081,8 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
       BeginProperty Item21 {1C13A8E2-A0B6-11D0-848E-00A0C90DC8A9} 
          _Version        =   393216
          Name            =   "Text11"
-         Object.Left            =   2505
-         Object.Width           =   1245
+         Object.Left            =   2250
+         Object.Width           =   1575
          Object.Height          =   285
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Calibri"
@@ -1087,6 +1094,7 @@ Begin {78E93846-85FD-11D0-8487-00A0C90DC8A9} DataReport3
             Strikethrough   =   0   'False
          EndProperty
          DataField       =   "comp_serial"
+         CanGrow         =   -1  'True
          Alignment       =   2
          BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
             Type            =   0
